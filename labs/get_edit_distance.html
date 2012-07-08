@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>最短编辑长度</title>
+        <link rel="stylesheet" href="/stylesheets/styles.css">
+        <link rel="stylesheet" href="/stylesheets/pygment_trac.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="javascripts/respond.js"></script>
+        <!--[if lt IE 9]>
+          <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <!--[if lt IE 8]>
+        <link rel="stylesheet" href="/stylesheets/ie.css">
+        <![endif]-->
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    </head>
+    <body>
+        <div id="header">
+            <nav>
+                <li class="fork"><a href="https://github.com/RubyLouvre">首页</a></li>
+                <li class="fork"><a href="https://github.com/RubyLouvre">下载</a></li>
+                <li class="fork"><a href="https://github.com/RubyLouvre">文档</a></li>
+                <li class="fork"><a href="https://github.com/RubyLouvre">教程</a></li>
+                <li class="fork"><a href="https://github.com/RubyLouvre">文章</a></li>
+                <li class="fork"><a href="https://github.com/RubyLouvre">测试</a></li>
+                <li class="fork"><a href="/labs/index.html">实验</a></li>
+            </nav>
+        </div><!-- end header -->
+
+        <div class="wrapper">
+
+            <section>
+                <style>
+                    .compare{
+                        border:1px solid #000;
+                        border-collapse:collapse;
+                    }
+                    .compare td{
+                        border:1px solid #000;
+                        width:30px;
+                        height:30px;
+                        text-align:center;
+                        background:olive;
+                    }
+                    .desc{
+                        border:2px solid #D2691E;
+                        border-collapse:collapse;
+                    }
+                    .desc td{
+                        border:1px solid  #D2691E;
+                        width:80px;
+                        height:30px;
+                        text-align:center;
+                        background:#87CEEB;
+                    }
+                    td.zero{
+                        background:teal;
+                    }
+                    td.retain{
+                        background:orange;
+                    }
+                    td.update{
+                        background:fuchsia;
+                    }
+                    td.delete{
+                        background:red;
+                    }
+                    td.add{
+                        background:lime;
+                    }
+                </style>
+
+                <script type="text/javascript">
+                    window.onload = function(){
+                        var getEditScripts = (function () {
+                            // 一个简单的Levenshtein distance算法
+                            var getEditDistance = function(from, to, table){
+                                var matrix = [], fn = from.length, tn = to.length;
+                                // 初始化一个矩阵,行数为b,列数为a
+                                var i,j, td;
+                                for(i = 0; i <= tn; i++){
+                                    matrix[i] = [i];//设置第一列的值
+                                    table && table.insertRow(i)
+                                }
+                                for(j = 0; j <= fn; j++){
+                                    matrix[0][j] = j;//设置第一行的值
+                                    if(table){
+                                        for(i = 0; i <= tn; i++){
+                                            td = table.rows[i].insertCell(j);
+                                            if(isFinite(matrix[i][j])){
+                                                td.innerHTML = matrix[i][j];
+                                                td.className = "zero"
+                                            }
+                                        }
+                                    }
+                                }
+                                // 填空矩阵
+                                for(i = 1; i <= tn; i++){
+                                    for(j = 1; j <= fn; j++){
+                                        if( to[i-1] == from[j-1] ){
+                                            matrix[i][j] = matrix[i-1][j-1];//没有改变
+                                        } else {
+                                            matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, //代替 substitution
+                                            matrix[i][j-1] + 1, // 插入insertion
+                                            matrix[i-1][j] + 1); //删除 deletion
+                                        }
+                                        if(table){
+                                            td = table.rows[i].cells[j]
+                                            td.innerHTML = matrix[i][j]
+                                        }
+                                    }
+                                }
+                                window.console && console.log(matrix.join("\n"))
+                                return matrix
+                            };
+                            //返回具体的编辑步骤
+                            var _getEditScripts = function(from, to, matrix, table){
+                                var x = from.length;
+                                var y = to.length;
+                                var scripts = []
+                                if(x == 0){//如果原数组为0,那么新数组的都是新增的
+                                    for( i = 0; i < y; i++){
+                                        scripts[scripts.length] = {
+                                            action: "add",
+                                            x: i
+                                        }
+                                    }
+                                    return scripts
+                                }else if(y == 0){//如果新数组为0,那么我们要删除所有旧数组的元素
+                                    for( ; i < x; i++){
+                                        scripts[scripts.length] = {
+                                            action: "delete",
+                                            y: i
+                                        }
+                                    }
+                                    return scripts
+                                }else{
+                                    var i =  Math.max(x,y),action;
+                                    while( 1 ){
+                                        var cur = matrix[y][x];
+                                        if( y == 0 && x == 0){
+                                            break
+                                        }
+                                        var top = matrix[y-1][x];
+                                        var left = matrix[y][x-1]
+                                        var diagon = matrix[y-1][x-1];
+                                        action = "retain"//top == left && cur == diagon
+                                        var min = Math.min(top, diagon, left);
+                                        var td =  table && (table.rows[y].cells[x])
+                                        if( min < cur ){
+                                            switch(min){
+                                                case top:
+                                                    action = "add";
+                                                    y--
+                                                    break;
+                                                case left:
+                                                    action = "delete";
+                                                    x--
+                                                    break;
+                                                case diagon:
+                                                    action = "update";
+                                                    x--;
+                                                    y--
+                                                    break;
+                                            }
+                                        } else{
+                                            x--;
+                                            y--
+                                        }
+                                        if(table){
+                                            td.className = action;
+                                        }
+                                        scripts[scripts.length] = {
+                                            action:action,
+                                            x:x,
+                                            y:y
+                                        }
+                                    }
+                                }
+                                scripts.reverse();
+                                window.console && console.log(scripts);
+                                return scripts
+                            }
+
+                            return function( old, neo ){
+                                var client = get("client")
+                                client.innerHTML = "";
+                                var table = document.createElement("table");
+                                client.appendChild(table);
+                                table.className = "compare";
+                                var matrix = getEditDistance( old, neo,table);
+                                return _getEditScripts( old, neo, matrix,table)
+                            }
+                        })();
+
+
+                        var get = function(id){
+                            return  document.getElementById(id)
+                        }
+                        get("button").onclick = function(){
+                            var prev = get("prev").value;
+                            var curr = get("curr").value;
+                            if(prev && curr){
+                                getEditScripts(prev,curr);
+                            }
+                        }
+
+                    }
+                </script>
+                <center><h2>快速编辑字符串</h2></center>
+                <p>
+                    将<input id="prev" />变更为 <input  id="curr"/><button id="button" type="button">提交</button>
+                </p>
+                <table class="desc">
+                    <tbody>
+                        <tr>
+                            <td class="retain">橙色</td><td>保留</td>
+                        </tr>
+                        <tr>
+                            <td class="update">青色</td><td>更新</td>
+                        </tr>
+                        <tr>
+                            <td class="add">鲜绿</td><td>新增</td>
+                        </tr>
+                        <tr>
+                            <td class="delete">红色</td><td>删除</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr/>
+                <div id="client">
+
+                </div>
+            </section>
+
+        </div>
+        <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+
+    </body>
+</html>
