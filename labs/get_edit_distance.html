@@ -138,7 +138,7 @@
                                     }
                                     return scripts
                                 }else{
-                                    var i =  Math.max(x,y),action;
+                                    var i =  Math.max(x,y), action, _action;
                                     while( 1 ){
                                         var cur = matrix[y][x];
                                         if( y == 0 && x == 0){
@@ -149,26 +149,38 @@
                                         var diagon = matrix[y-1][x-1];
                                         action = "retain"//top == left && cur == diagon
                                         var min = Math.min(top, diagon, left);
-                                        var td =  table && (table.rows[y].cells[x])
+                                        var td =  table && (table.rows[y].cells[x]);
+                                        x--;
+                                        y--
                                         if( min < cur ){
                                             switch(min){
                                                 case top:
                                                     action = "add";
-                                                    y--
+                                                    x++
                                                     break;
                                                 case left:
                                                     action = "delete";
-                                                    x--
+                                                    y++
                                                     break;
                                                 case diagon:
                                                     action = "update";
-                                                    x--;
-                                                    y--
+                                                    if(_action){
+                                                        action = _action;
+                                                        _action = false;
+                                                    }
                                                     break;
                                             }
                                         } else{
-                                            x--;
-                                            y--
+                                            switch(min){
+                                                case top:
+                                                    _action = "add";
+                                                    x++;
+                                                    break;
+                                                case left:
+                                                    _action = "delete"
+                                                    y++;
+                                                    break;
+                                            }
                                         }
                                         if(table){
                                             td.className = action;
