@@ -118,27 +118,17 @@
                             };
                             //返回具体的编辑步骤
                             var _getEditScripts = function(from, to, matrix, table){
-                                var x = from.length;
-                                var y = to.length;
-                                var scripts = []
-                                if(x == 0){//如果原数组为0,那么新数组的都是新增的
-                                    for( i = 0; i < y; i++){
+                                var x = from.length, y = to.length, scripts = [], _action;
+                                if(x == 0 || y == 0){//如果原数组为0,那么新数组的都是新增的,如果新数组为0,那么我们要删除所有旧数组的元素
+                                    var n =  Math.max(x,y), action = x == 0 ? "add" : "delete"
+                                    for( var i = 0; i < n; i++ ){
                                         scripts[scripts.length] = {
-                                            action: "add",
-                                            x: i
-                                        }
-                                    }
-                                    return scripts
-                                }else if(y == 0){//如果新数组为0,那么我们要删除所有旧数组的元素
-                                    for( ; i < x; i++){
-                                        scripts[scripts.length] = {
-                                            action: "delete",
+                                            action: action,
+                                            x: i,
                                             y: i
                                         }
                                     }
-                                    return scripts
                                 }else{
-                                    var i =  Math.max(x,y), action, _action;
                                     while( 1 ){
                                         var cur = matrix[y][x];
                                         if( y == 0 && x == 0){
@@ -232,7 +222,7 @@
                 <p>将字符串S1转换为字符串S2的所用的最少的字符串操作数称作字符串S1到S2的最短距离，记为 d(S1, S2). </p>
                 <p>算法设计：给定字符串S1和S2，计算它们的最短编辑距离d(S1, S2)。</p>
                 <p>算法思想： 用数组b[i][j]记录s1[1..i]和s2[1..j]之间的编辑长度, 递归公式<br/>
-                    b[i][j]=min(b[i-1]][j],b[i][j-1],b[i][j]+(s1[i]==s2[i]?0:1));
+                    <b style="color:#a9ea00">b[i][j]= Math.min(b[i-1]][j], b[i][j-1], b[i][j] + ( s1[i] == s2[i] ? 0 : 1 ) )</b>;
                 </p>
                 <p>
                     将<input id="prev" />变更为 <input  id="curr"/><button id="button" type="button">提交</button>
