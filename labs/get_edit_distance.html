@@ -162,6 +162,8 @@
                                             }
                                         } else{
                                             switch(min){
+                                                case diagon:
+                                                    break;//不加这分支，ABCDE变更为ACC ,ABC 变更为ACC都会出错
                                                 case top:
                                                     _action = "add";
                                                     x++;
