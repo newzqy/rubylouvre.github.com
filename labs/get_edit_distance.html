@@ -199,7 +199,16 @@
                                 return _getEditScripts( old, neo, matrix,table)
                             }
                         })();
-
+/*
+ *                  var top = (y == 0) ? int.MaxValue : matrix[x, y - 1];
+                    var left = (x == 0) ? int.MaxValue : matrix[x - 1, y];
+                    var diagon = (x == 0 || y == 0) ? int.MaxValue : matrix[x - 1, y - 1];
+关于索引超出界限
+价格判断就行了
+亮靓  23:07:50
+我是C#表示
+你可以吧:matrix[x, y - 1]等同于matrix[y-1][x]
+ */
 
                         var get = function(id){
                             return  document.getElementById(id)
