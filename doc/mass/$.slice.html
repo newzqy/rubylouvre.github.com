@@ -56,8 +56,18 @@
             <p>Array</p>
             <fieldset>
                 <legend>例子</legend>
-                <pre class="brush:javascript;gutter:false;toolbar:false">$.require("lang",function(){ var ret = $.slice({0:'aa',1:'bb',2:'cc',length:3});
-                    ret = $.dump(ret); $.log(ret,true); });</pre>
+                <pre class="brush:javascript;gutter:false;toolbar:false">
+$.require("lang", function() {
+    var ret = $.slice({
+        0: 'aa',
+        1: 'bb',
+        2: 'cc',
+        length: 3
+    });
+    ret = $.dump(ret);
+    $.log(ret, true);
+});
+</pre>
                 <button class="doc_btn" onclick="exec1()">点我，执行代码</button>
             </fieldset>
         </article>

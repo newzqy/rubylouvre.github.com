@@ -22,7 +22,6 @@
     <body>
         <article>
             <script type="text/javascript">
-                SyntaxHighlighter.config.clipboardSwf = '../js/clipboard.swf';
                 SyntaxHighlighter.all();
                 var exec1 = function(){
                     $.require("lang",function(){
@@ -56,18 +55,35 @@
                     会触发表单的submit事件；当text,password,textare这些控件获得焦点，并且在键盘上回车时（回车键的键码有两个13,108），
                     也能触发form的submit事件。我们就根据这些默认行为成功模拟submit事件。但分明这里的分支太多了，要写许多else if, 如果善用oneObject方法，我们既可以节省代码也能提向性能。</p>
                 <pre
-                class="brush:javascript;gutter:false;toolbar:false">var submitWhich = $.oneObject("13,108"); var submitInput = $.oneObject("submit,image");
-                    var submitType = $.oneObject("text,password,textarea"); $.event.special.submit
-                    = { setup: delegate(function(src){ system.bind.call( src, "click._submit
-                    keypress._submit", function( e ) { var el = e.target, type = el.type; if(
-                    el.form && ( submitInput[type] || submitWhich[ e.which ] && submitType[type])
-                    ){ e.type = "submit"; system.handle.call(src, e); } }); }), teardown: delegate(function(src){
-                    system.unbind.call( src, "._submit" ); }) }</pre>
+                class="brush:javascript;gutter:false;toolbar:false">
+var submitWhich = $.oneObject("13,108");
+var submitInput = $.oneObject("submit,image");
+var submitType = $.oneObject("text,password,textarea");
+$.event.special.submit = {
+    setup: delegate(function(src) {
+        system.bind.call(src, "click._submit keypress._submit", function(e) {
+            var el = e.target,
+                type = el.type;
+            if (el.form && (submitInput[type] || submitWhich[e.which] && submitType[type])) {
+                e.type = "submit";
+                system.handle.call(src, e);
+            }
+        });
+    }),
+    teardown: delegate(function(src) {
+        system.unbind.call(src, "._submit");
+    })
+}
+</pre>
                     <p>例2，生成一个值全部为false的对象。</p>
-                    <pre class="brush:javascript;gutter:false;toolbar:false">$.require("lang",function(){ var ret = $.oneObject([1,2,3],false) ret
-                        = $.dump(ret);//序列化 $.log(ret,true);//打印在页面底部 });</pre>
-                    <button class="doc_btn"
-                    onclick="exec1()">点我，执行代码</button>
+                    <pre class="brush:javascript;gutter:false;toolbar:false">
+$.require("lang", function() {
+    var ret = $.oneObject([1, 2, 3], false)
+    ret = $.dump(ret); //序列化
+    $.log(ret, true); //打印在页面底部
+});
+</pre>
+                    <button class="doc_btn" onclick="exec1()">点我，执行代码</button>
             </fieldset>
         </article>
     </body>

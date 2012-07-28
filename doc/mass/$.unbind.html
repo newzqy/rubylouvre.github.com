@@ -53,8 +53,17 @@
             </dl>
             <fieldset>
                 <legend>例子</legend>
-                <pre class="brush:javascript;gutter:false;toolbar:false">var i = 0; var fn = $.bind(document,"click",function(){ i ++; $.log("触发了第"+i+"点击事件",true);
-                    if(i === 4){ $.unbind(document,"click",fn); $.log("已移除点击事件",true); } })</pre>
+                <pre class="brush:javascript;gutter:false;toolbar:false">
+var i = 0;
+var fn = $.bind(document, "click", function() {
+    i++;
+    $.log("触发了第" + i + "点击事件", true);
+    if (i === 4) {
+        $.unbind(document, "click", fn);
+        $.log("已移除点击事件", true);
+    }
+})
+</pre>
             </fieldset>
         </article>
     </body>
