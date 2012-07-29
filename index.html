@@ -26,7 +26,7 @@
                 <li class="fork"><a href="/doc/index.html">文档</a></li>
                 <li class="fork"><a href="https://github.com/RubyLouvre">教程</a></li>
                 <li class="fork"><a href="https://github.com/RubyLouvre">文章</a></li>
-                <li class="fork"><a href="https://github.com/RubyLouvre">测试</a></li>
+                <li class="fork"><a href="/test/index.html">测试</a></li>
                 <li class="fork"><a href="/labs/index.html">实验</a></li>
             </nav>
         </div><!-- end header -->
@@ -74,7 +74,45 @@
                 </p>
                 <p>http://www.hardcode.nl/subcategory_1/article_590-open-an-iframe-and-set-source-with-javascript.htm </p>
             </section>
+             <script>
+            (function() {
 
+                var UIloader = function( url, callback){
+                    if(typeof url === "string" && typeof callback == "function"){
+                        var el = document.createElement('iframe'), data;
+                        el._state = 0;
+                        document.body.appendChild( el );
+                        el.style.display = 'none';
+                        (function( el, type, fn ) {
+                            if (window.VBArray) {
+                                el.attachEvent('on' + type, fn);
+                            } else {
+                                el.addEventListener(type, fn, false);
+                            }
+                        })(el, 'load', function() {
+                            if(el._state === 1) {
+                                try {
+                                    data = el.contentWindow.name;
+                                } catch(e) {}
+                                callback(data)
+                                document.body.removeChild(el)
+                            } else if(el._state === 0) {
+                                el._state = 1;
+                                el.contentWindow.location =   "about:blank" //"/favicon.ico"
+                            }
+                        });
+                        el.src = url;
+                    }else{
+                        throw "arguments error"
+                    }
+                }
+
+                UIloader("http://www.cnblogs.com/rubylouvre/archive/2012/07/28/2613565.html",function(a){
+                    console.log(a+"!!!!!!!!!!!!!")
+                })
+
+            })();
+        </script>
         </div>
         <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
 
