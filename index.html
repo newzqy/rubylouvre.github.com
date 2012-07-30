@@ -128,7 +128,7 @@
                     } catch(e) {};
                     el._state = 2;
                     callback(data)
-                    callback = function(){}
+                    callback = function(){};//防止旧式的标准浏览器二次触发它
                     body.removeChild(el)
                 } else if(el._state === 0) {
                     setTimeout(function(){
@@ -144,7 +144,7 @@
     }
 
     UIloader("http://www.cnblogs.com/rubylouvre/archive/2012/07/28/2613565.html",function( data ){
-        window.console &&  console.log( data )
+        window.console &&  console.log( data );
     })
 })();
 
