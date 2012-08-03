@@ -21,19 +21,6 @@
     
     <body>
         <article>
-            <script type="text/javascript">
-                (function(){
-                    $.exports("mass");
-                    var $ = "取消";
-                    mass.require("ready,support",function(dom,support,spec){
-                        var ret = mass.dump(support);//序列化
-                        mass.log(dom,true);
-                        mass.log($,true);
-                        mass.log(ret,true);
-                        mass.log("执行最后的回调函数",true)
-                    });
-                })()
-            </script>
             <h3>$.exports( name )</h3>
             <p>
                 <span class="stress">描述：</span>
@@ -66,11 +53,13 @@
 </pre>
             </fieldset>
             <p>
-                <span class="note">小贴士</span>:mass Framework还提供了另一种更有效的机制防止命名空间冲突, 你直接在引用框架的script标签中定义一个叫name属性,
+                <span class="note">小贴士</span>： mass Framework还提供了另一种更有效的机制防止命名空间冲突, 你直接在引用框架的script标签中定义一个叫name属性,
                 然后把你喜欢的命名空间赋给它就行了,如:</p>
-            <pre class="brush:xml;gutter:false;toolbar:false">
+            <div>
+                <pre class="brush:xml;gutter:false;toolbar:false">
 <script name="Baidu" src="/scripts/mass.js"></script>
 </pre>
+            </div>
         </article>
     </body>
 
