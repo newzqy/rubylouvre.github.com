@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Rubylouvre.github.com by RubyLouvre 首页</title>
+        <link rel="stylesheet" href="/stylesheets/styles.css">
+        <link rel="stylesheet" href="/stylesheets/pygment_trac.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="/javascripts/respond.js"></script>
+        <script src="scripts/neo.js"></script>
+        <!--[if lt IE 9]>
+          <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <!--[if lt IE 8]>
+        <link rel="stylesheet" href="/stylesheets/ie.css">
+        <![endif]-->
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    </head>
+    <body>
+        <div id="header">
+            <nav>
+                <li class="fork"><a href="/">首页</a></li>
+                <li class="fork"><a href="https://github.com/RubyLouvre">下载</a></li>
+                <li class="fork"><a href="/doc/index.html">文档</a></li>
+                <li class="fork"><a href="https://github.com/RubyLouvre">教程</a></li>
+                <li class="fork"><a href="https://github.com/RubyLouvre">文章</a></li>
+                <li class="fork"><a href="/test/index.html">测试</a></li>
+                <li class="fork"><a href="/labs/index.html">实验</a></li>
+            </nav>
+        </div><!-- end header -->
+
+        <div class="wrapper">
+
+            <section>
+                <div id="title">
+                    <h1>mass Framework</h1>
+                    <p>一个模块化，以大模块开发为目标的HTML5框架。</p>
+                </div>
+                <hr>
+                <p>mass Framework的模块化经过两年来调整与改良，大致分为四类：</p>
+
+                <ol>
+                    <li>种子模块， mass.js，最精简的内核， 包含模块加载系统。</li>
+                    <li>补丁模块， lang_fix.js, css_fix.js, event_fix.js,主要是用于兼容旧式IE的，在chrome1+, FF4+, opera10+, safari4+是不会加载它们的。</li>
+                    <li>核心模块， 所有位于mass-Framework/src目录下，但不在其子目录下的JS文件， 提供框架的核心功能。</li>
+                    <li>外围模块， 位于mass-Framework/src/more的JS文件。</li>
+                </ol>
+
+                <p>mass Framework的优点：</p>
+                <ol>
+                    <li>多库共存。</li>
+                    <li>多版本共存。</li>
+                    <li>模块系统，将不同业务的代码封存于不同的JS文件中，确保自治，加载时能自行处理依赖关系。(目前版本为v15)</li>
+                    <li>模板机制，提供format，hereDoc，tag, ejs（v9） 这四种级别的字符串拼接方法（后两个是用于生成HTML代码片断）。</li>
+                    <li>操作流，一种比异步列队（Deferred）更为强大的处理异步的机制，避免回调套嵌，将串行等待变成并行等待,一处合并，多处触发。</li>
+                    <li>强大的类工厂。（目前版本为v9）</li>
+                    <li>AS3式的补帧动画系统， 支持回放</li>
+                    <li>CSS3 transform2D支持， 您可以轻松旋转图片角度了。</li>
+                    <li>第五代选择器引擎Icarus，全面兼容CSS3高级伪类与jQuery自定义伪类的。</li>
+                    <li>支持事件代理，多级hook的事件系统。</li>
+
+                    <li>lang_fix模块已经为您添加上ECMA262v5的绝对大多数新API的支持，因此可能痛快使用 String.prototype.trim,
+                        Array.prototype.forEach, Array.prototype.map,Array.prototype.filter,
+                        Array.prototype.reduce, Function.prototype.bind吧 。</li>
+                    <li>丰富的工具函数,让你轻松处理字符串与数组!</li>
+                    <li>API 95%与jQuery神似，学习成本极低。</li>
+                </ol>
+
+                <p>
+                    <span class="credits left">Project maintained by <a href="https://github.com/RubyLouvre">RubyLouvre</a></span>
+                    <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+                </p>
+                <p>http://www.hardcode.nl/subcategory_1/article_590-open-an-iframe-and-set-source-with-javascript.htm </p>
+            </section>
+            <script>
+(function() {
+    //数据发送页的地址，回调，可配置项
+    var UIloader = function( url, callback, opts){
+        if(typeof url === "string" && typeof callback == "function"){
+            var el = document.createElement('iframe'), data, type, timeout
+            url += (url.indexOf('?') > 0 ? '&' : '?') + '_time'+ new Date * 1
+            switch( typeof opts ){
+                case "number":
+                    timeout = opts;//用于延迟opera数据接收时刻
+                    break;
+                case "string":
+                    type = opts;//接受的数据类型
+                case "object":
+                    if(opts){//有可能是null
+                        timeout = opts.timeout
+                        type = opts.type
+                    }
+            }
+            timeout = timeout || 3000 
+            function receive(e){
+                e = e || event;
+                el._state = 2;
+                callback(e.data)
+                if(window.removeEventListener){
+                    window.addEventListener('message', receive, false)
+                }else{
+                    window.detachEvent('onmessage', receive);
+                }
+                body.removeChild(el)
+            }
+            if(window.addEventListener ){
+                window.addEventListener('message', receive, false)
+            }else if(type == "string"){
+                //只有明确收到的数据是字符串，才使用IE89的postMessage API,因为它只能发字符串
+                window.attachEvent('onmessage', receive);
+            }
+            el.style.display = "none";
+            el._state = 0;
+            var body = document.body || document.documentElement;
+            body.insertBefore( el, body.firstChild );
+            ;(function( node, type, fn ) {
+                if ( window.VBArray ) {//先检测IE分支，因为标准浏览器是使用postMessage而不用window.name
+                    node.attachEvent('on' + type, fn);
+                } else {
+                    node.addEventListener(type, fn, false);
+                }
+            })(el, 'load', function eee() {
+                if(el._state === 1 ) {
+                    try {
+                        data = el.contentWindow.name;
+                    } catch(e) {};
+                    el._state = 2;
+                    callback(data)
+                    callback = function(){};//防止旧式的标准浏览器二次触发它
+                    body.removeChild(el)
+                } else if(el._state === 0) {
+                    setTimeout(function(){
+                        el._state = 1;//跳回本域
+                        el.contentWindow.location.replace("about:blank")
+                    }, (window.opera ? timeout : 31) )
+                }
+            });
+            el.src = url;
+        }else{
+            throw "arguments error"
+        }
+    }
+
+    UIloader("http://www.cnblogs.com/rubylouvre/archive/2012/07/28/2613565.html",function( data ){
+        window.console &&  console.log( data );
+    })
+})();
+
+            </script>
+        </div>
+        <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+
+    </body>
+</html>

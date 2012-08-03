@@ -1,18 +1,35 @@
 //=========================================
-// 类型扩展模块v3 by 司徒正美
+// 类型扩展模块v7 by 司徒正美
 //=========================================
 $.define("lang", Array.isArray ? "" : "lang_fix",function(){
-    // $.log("已加载语言扩展模块");
+    $.log("已加载语言扩展模块");
     var global = this,
     rformat = /\\?\#{([^{}]+)\}/gm,
     rnoclose = /^(area|base|basefont|bgsound|br|col|frame|hr|img|input|isindex|link|meta|param|embed|wbr)$/i,
     // JSON RegExp
     rvalidchars = /^[\],:{}\s]*$/,
     rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,
-    rvalidtokens = /"[^"\\\r\n]*"|true|false|null|-?(?:\d\d*\.|)\d+(?:[eE][\-+]?\d+|)/,
+    rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
     rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g,
     str_eval = global.execScript ? "execScript" : "eval",
     str_body = (global.open + '').replace(/open/g, '');
+    Escapes = {
+        "\\": "\\\\",
+        '"': '\\"',
+        "\b": "\\b",
+        "\f": "\\f",
+        "\n": "\\n",
+        "\r": "\\r",
+        "\t": "\\t"
+    };
+
+    // Internal: Converts `value` into a zero-padded string such that its
+    // length is at least equal to `width`. The `width` must be <= 6.
+    var toPaddedString = function (width, value) {
+        // The `|| 0` expression is necessary to work around a bug in
+        // Opera <= 7.54u2 where `0 == -0`, but `String(-0) !== "0"`.
+        return ("000000" + (value || 0)).slice(-width);
+    };
     $.mix({
         //判定是否是一个朴素的javascript对象（Object或JSON），不是DOM对象，不是BOM对象，不是自定义类的实例。
         isPlainObject: function (obj){
@@ -131,32 +148,45 @@ $.define("lang", Array.isArray ? "" : "lang_fix",function(){
             return result;
         },
         // 为字符串两端添上双引号,并对内部需要转义的地方进行转义
-        quote: global.JSON && JSON.stringify || String.quote ||  (function(){
-            var meta = {
-                '\b': '\\b',
-                '\t': '\\t',
-                '\n': '\\n',
-                '\f': '\\f',
-                '\r': '\\r',
-                '"' : '\\"',
-                '\\': '\\\\'
-            },
-            reg = /[\x00-\x1F\'\"\\\u007F-\uFFFF]/g,
-            regFn = function(c){
-                if (c in meta) {
-                    return '\\' + meta[c];
-                }
-                var ord = c.charCodeAt(0);
-                return ord < 0x20   ? '\\x0' + ord.toString(16)
-                :  ord < 0x7F   ? '\\'   + c
-                :  ord < 0x100  ? '\\x'  + ord.toString(16)
-                :  ord < 0x1000 ? '\\u0' + ord.toString(16)
-                : '\\u'  + ord.toString(16)
-            };
-            return function (str) {
-                return    '"' + str.replace(reg, regFn)+ '"';
+//        quote:  String.quote ||  (function(){
+//            var meta = {
+//                '\b': '\\b',
+//                '\t': '\\t',
+//                '\n': '\\n',
+//                '\f': '\\f',
+//                '\r': '\\r',
+//                '"' : '\\"',
+//                '\\': '\\\\'
+//            },
+//            reg = /[\x00-\x1F\'\"\\\u007F-\uFFFF]/g,
+//            regFn = function(c){
+//                if (c in meta) {
+//                    return '\\' + meta[c];
+//                }
+//                var ord = c.charCodeAt(0);
+//                return ord < 0x20   ? '\\x0' + ord.toString(16)
+//                :  ord < 0x7F   ? '\\'   + c
+//                :  ord < 0x100  ? '\\x'  + ord.toString(16)
+//                :  ord < 0x1000 ? '\\u0' + ord.toString(16)
+//                : '\\u'  + ord.toString(16)
+//            };
+//            return function (str) {
+//                return    '"' + (str||"").replace(reg, regFn)+ '"';
+//            }
+//        })(),
+        
+        quote : function (value) {
+            var result = '"', index = 0, symbol;
+            for (; symbol = value.charAt(index); index++) {
+                // Escape the reverse solidus, double quote, backspace, form feed, line
+                // feed, carriage return, and tab characters.
+                result += '\\"\b\f\n\r\t'.indexOf(symbol) > -1 ? Escapes[symbol] :
+                // If the character is a control character, append its Unicode escape
+                // sequence; otherwise, append the character as-is.
+                symbol < " " ? "\\u00" + toPaddedString(2, symbol.charCodeAt(0).toString(16)) : symbol;
             }
-        })(),
+            return result + '"';
+        },
         dump: function(obj, indent) {
             indent = indent || "";
             if (obj == null)//处理null,undefined
@@ -398,9 +428,9 @@ $.define("lang", Array.isArray ? "" : "lang_fix",function(){
          *如果我们要用户填空的文本，需要字节上的长短限制，比如发短信，也要用到此方法。
          *随着浏览器普及对二进制的操作，这方法也越来越常用。
          */
-       // byteLen: function(target){
-       //     return target.replace(/[^\x00-\xff]/g,"--").length;
-       // },
+        // byteLen: function(target){
+        //     return target.replace(/[^\x00-\xff]/g,"--").length;
+        // },
         byteLen: function(str){
             for(var i = 0, cnt = 0; i < str.length; i++){
                 var value = str.charCodeAt(i);
@@ -495,10 +525,17 @@ $.define("lang", Array.isArray ? "" : "lang_fix",function(){
             .replace(/><wbr>/g, '>');
         }
     });
-    if(window.Blob){
+
+    if(global.netscape && global.Blob){//不要使用window前缀
         $.String.byteLen = function(str){
-            var a = new Blob([str],{type:"text/css"});
-            return a.size;
+            return new Blob([str],{
+                type:"text/css"
+            }).size
+        }
+    }
+    if(global.Buffer){//不要使用window前缀
+        $.String.byteLen = function(str){
+            return new Buffer(str, "utf-8").length
         }
     }
     $.String("charAt,charCodeAt,concat,indexOf,lastIndexOf,localeCompare,match,"+
@@ -518,6 +555,14 @@ $.define("lang", Array.isArray ? "" : "lang_fix",function(){
             if (~index )
                 return $.Array.removeAt(target, index);
             return false;
+        },
+        merge: function( first, second ) {
+            var i = ~~first.length, j = 0;
+            for ( var n = second.length; j < n; j++ ) {
+                first[ i++ ] = second[ j ];
+            }
+            first.length = i;
+            return first;
         },
         //对数组进行洗牌。若不想影响原数组，可以先拷贝一份出来操作。
         // Jonas Raoni Soares Silva http://jsfromhell.com/array/shuffle [v1.0]
@@ -598,7 +643,7 @@ $.define("lang", Array.isArray ? "" : "lang_fix",function(){
         },
         //对两个数组取并集。
         union: function( target, array ){
-            return $.Array.unique( target.concat(array) );
+            return $.Array.unique( $.Array.merge( target, array ) );
         },
         //对两个数组取交集
         intersect: function( target, array ){
@@ -782,6 +827,7 @@ $.define("lang", Array.isArray ? "" : "lang_fix",function(){
 2012.5.21 添加$.Array.each方法,重构$.Object.each与$.each方法;
 2012.6.5 更新camelize，escapeHTML, unescapeHTML,stripTags,stripScripts,wbr方法 v4
 2012.6.29 添加inGroupsOf，去掉last first
+2012.7.31 添加$.Array.merge API
 键盘控制物体移动 http://www.wushen.biz/move/
 https://github.com/tristen/tablesort
 https://gist.github.com/395070

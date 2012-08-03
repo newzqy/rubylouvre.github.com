@@ -6,12 +6,16 @@
     });
  
     if(self.eval !== top.eval){
-        window.$ && $.require("ready,node,css",function(){
-            var iheight = parseFloat( document.outerHeight || $("article").outerHeight() ); //取得其高
-            if(iheight < 400)
-                iheight = 500;
-            $.log(iheight)
-            $("#iframe",parent.document).height(iheight);
+        window.$ && $.require("ready,css,node",function(){
+            parent.callParent && parent.callParent(document);
         });
     }
+    window.SyntaxHighlighter && SyntaxHighlighter.all();
+    $.require("ready,event",function(){
+        $("body").delegate(".doc_btn","click",function(){
+            if(typeof this.exec == "function"){
+                this.exec.call(window)
+            }
+        });
+    });
 })();

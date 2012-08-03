@@ -53,7 +53,7 @@ $.define("spec","lang", function(){
     //取得元素节点
     var get = function(id) {
         return DOC.getElementById(id);
-    };
+    }
     //用于生成元素节点，注意第一层只能用一个元素
     var parseHTML = function() {
         var div = DOC.createElement("div");
@@ -103,7 +103,7 @@ $.define("spec","lang", function(){
                 var actual = this.actual;
                 var bool = false;
                 //每一条expect语句都对应一个KBD标签
-                var elem = this.node.getElementsByTagName("kbd")[this.count]
+                var  elem = this.node.getElementsByTagName("kbd")[this.count]
                 switch(method){
                     case "ok"://布尔真测试
                         bool = actual === true;
@@ -197,10 +197,32 @@ $.define("spec","lang", function(){
         id = id || arguments.callee.caller.arguments[0];
         return new Expect(actual, id);
     };
+
+    function firstAppend(){
+        //当DOM树建完之时，开始构筑测试系统的外廓
+        var html = ['<div id="mass-spec-result"><p class="mass-spec-summary">',
+        '<span id="mass-spec-failures" title="0">0</span>&nbsp;failures&emsp;',
+        '<span id="mass-spec-errors" title="0">0</span>&nbsp;errors&emsp;',
+        '<span id="mass-spec-done" title="0">0</span>%&nbsp;done&emsp;',
+        '<span id="mass-spec-time" title="0">0</span>ms&nbsp;</p>',
+        '<p class="mass-spec-summary">',global.navigator.userAgent,
+        '</p><div id="mass-spec-cases"><div id="loading">正在加载测试数据中，请耐心等特</div></div></div>'];
+        //div#mass-spec-result为整个系统的容器
+        //div#mass-spec-summary用于放置各种统计
+        //div#mass-spec-cases用于放置测试模块
+        $.log("当DOM树建完之时，开始构筑测试系统的外廓")
+        DOC.body.appendChild( parseHTML(html.join("")) );
+    }
+    var first_append = false;
     $.fixture = function( title, asserts ) {
+
         $.require("ready",function(){
             //由$.fixture第一个参数改造而成
             var fixtureId = "mass-spec-"+title;
+            if( !first_append || !get("mass-spec-cases") ){
+                firstAppend();
+                first_append = true;
+            }
             if(!get(fixtureId)){//在主显示区中添加一个版块
                 /** =================每个模块大抵是下面的样子===============
                 <div class="mass-spec-case" id="mass-spec-$.js">
@@ -213,8 +235,10 @@ $.define("spec","lang", function(){
                 var html = ['<div id="#{0}" class="mass-spec-case">',
                 '<p class="mass-spec-slide"><a '+(!"1"[0]? 'href="javascript:void(0);"' : "")+'>#{1}</a></p>',
                 '<ul class="mass-spec-detail" style="display:none;"></ul></div>'].join('');
-                get("mass-spec-cases").appendChild(parseHTML( $.format(html, fixtureId, title)) );
+                get("mass-spec-cases").appendChild( parseHTML( $.format(html, fixtureId, title)) );
+
             }
+            //取得对象的所有方法名
             var names = Object.keys(asserts), name;
 
             ;(function runTest(){
@@ -257,7 +281,7 @@ $.define("spec","lang", function(){
                     try{
                         assert(title+"#"+name);//执行测试套件
                     }catch(err){
-                        $.log(err)
+                        $.log("error : "+err.message ,true)
                         bag.status = "error"
                         var el = node.getElementsByTagName("kbd")[ bag.count + 1];
                         if(el){
@@ -284,25 +308,12 @@ $.define("spec","lang", function(){
     }: function(s){
         return s
     }
-    $.require("ready",function(){
-        //当DOM树建完之时，开始构筑测试系统的外廓
-        var html = ['<div id="mass-spec-result"><p class="mass-spec-summary">',
-        '<span id="mass-spec-failures" title="0">0</span>&nbsp;failures&emsp;',
-        '<span id="mass-spec-errors" title="0">0</span>&nbsp;errors&emsp;',
-        '<span id="mass-spec-done" title="0">0</span>%&nbsp;done&emsp;',
-        '<span id="mass-spec-time" title="0">0</span>ms&nbsp;</p>',
-        '<p class="mass-spec-summary">',global.navigator.userAgent,
-        '</p><div id="mass-spec-cases"><div id="loading">正在加载测试数据中，请耐心等特</div></div></div>'];
-        //div#mass-spec-result为整个系统的容器
-        //div#mass-spec-summary用于放置各种统计
-        //div#mass-spec-cases用于放置测试模块
-        DOC.body.appendChild(parseHTML(html.join("")));
-    });
+
 });
 //2011.8.9    增加getUnpassExpect函数,用于取得没有通过的expect并显示出来
 //2011.10.26  优化format与quote
 //2011.10.27   runTest添加参数，用于等特一定做量的测试模块都加载完毕才执行
 //2011.10.31 去掉deferred模块的依赖，依靠ready列队自行添加测试的模块
 //2012.1.28  升级到v3，大大增强错误定位的能力
-//2012.4.30  升级到v4 去掉 Expect.Client,Expect.PASS,Expect.index,Expect.Class等属性,
-//然后更好的机制来定位错误
+//2012.4.30  升级到v4 去掉 Expect.Client,Expect.PASS,Expect.index,Expect.Class等属性
+//2012.7.31 确保测试的主体轮廓被先添加到页面

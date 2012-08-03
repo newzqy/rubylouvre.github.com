@@ -6,8 +6,8 @@
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <title>$.bind</title>
         <script type="text/javascript" src="/scripts/mass_merge.js"></script>
-        <script type="text/javascript" src="/scripts/doc/common.js"></script>
         <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
+        <script type="text/javascript" src="/scripts/doc/common.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushJScript.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushCss.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushXml.js"></script>
@@ -21,12 +21,6 @@
     
     <body>
         <article>
-            <script type="text/javascript">
-                SyntaxHighlighter.all();
-                $.bind(document,"click",function(){
-                    $.log("触发了点击事件",true);
-                });
-            </script>
             <h3>$.bind(obj,type,fn,[ phase ])</h3>
             <p>
                 <span class="stress">描述：</span>
@@ -52,10 +46,12 @@
             <fieldset>
                 <legend>例子</legend>
                 <pre class="brush:javascript;gutter:false;toolbar:false">
-$.bind(document, "click", function() {
-    $.log("触发了点击事件", true); //打印在页面底部
+var fn = $.bind(document, "click", function() {
+    alert("触发了点击事件并立即卸载它");
+    $.unbind(document, "click", fn)
 });
 </pre>
+                <button class="doc_btn" type="button">点我，执行代码</button>
             </fieldset>
         </article>
     </body>

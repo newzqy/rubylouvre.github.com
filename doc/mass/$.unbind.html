@@ -6,8 +6,8 @@
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <title>$.unbind</title>
         <script type="text/javascript" src="/scripts/mass_merge.js"></script>
-        <script type="text/javascript" src="/scripts/doc/common.js"></script>
         <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
+        <script type="text/javascript" src="/scripts/doc/common.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushJScript.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushCss.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushXml.js"></script>
@@ -21,18 +21,6 @@
     
     <body>
         <article>
-            <script type="text/javascript">
-                SyntaxHighlighter.all();
-                var i = 0;
-                var fn =  $.bind(document,"click",function(){
-                    i ++;
-                    $.log("触发了第"+i+"点击事件",true);
-                    if(i === 4){
-                        $.unbind(document,"click",fn);
-                        $.log("已移除点击事件",true);
-                    }
-                })
-            </script>
             <h3>$.unbind(obj,type,fn,[ phase ])</h3>
             <p>
                 <span class="stress">描述：</span>
@@ -64,6 +52,7 @@ var fn = $.bind(document, "click", function() {
     }
 })
 </pre>
+                <button class="doc_btn" type="button">点我，执行代码</button>
             </fieldset>
         </article>
     </body>

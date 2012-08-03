@@ -6,8 +6,8 @@
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <title>$.slice</title>
         <script type="text/javascript" src="/scripts/mass_merge.js"></script>
-        <script type="text/javascript" src="/scripts/doc/common.js"></script>
         <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
+        <script type="text/javascript" src="/scripts/doc/common.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushJScript.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushCss.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushXml.js"></script>
@@ -21,17 +21,6 @@
     
     <body>
         <article>
-            <script type="text/javascript">
-                SyntaxHighlighter.config.clipboardSwf = '../js/clipboard.swf';
-                SyntaxHighlighter.all();
-                function exec1(){
-                    $.require("lang",function(){
-                        var ret = $.slice({0:'aa',1:'bb',2:'cc',length:3});
-                        ret = $.dump(ret);
-                        $.log(ret,true);
-                    });
-                }
-            </script>
             <h3>$.slice(arr,[start],[end])</h3>
             <p>
                 <span class="stress">描述：</span>
@@ -68,7 +57,7 @@ $.require("lang", function() {
     $.log(ret, true);
 });
 </pre>
-                <button class="doc_btn" onclick="exec1()">点我，执行代码</button>
+                <button class="doc_btn" type="button">点我，执行代码</button>
             </fieldset>
         </article>
     </body>

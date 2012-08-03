@@ -6,8 +6,8 @@
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <title>$.oneObject</title>
         <script type="text/javascript" src="/scripts/mass_merge.js"></script>
-        <script type="text/javascript" src="/scripts/doc/common.js"></script>
         <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
+        <script type="text/javascript" src="/scripts/doc/common.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushJScript.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushCss.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushXml.js"></script>
@@ -21,16 +21,6 @@
     
     <body>
         <article>
-            <script type="text/javascript">
-                SyntaxHighlighter.all();
-                var exec1 = function(){
-                    $.require("lang",function(){
-                        var ret = $.oneObject([1,2,3],false)
-                        ret = $.dump(ret);//序列化
-                        $.log(ret,true);//打印在页面底部
-                    });
-                }
-            </script>
             <h3>$.oneObject(arr,[ val ])</h3>
             <p>
                 <span class="stress">描述：</span>
@@ -76,14 +66,16 @@ $.event.special.submit = {
 }
 </pre>
                     <p>例2，生成一个值全部为false的对象。</p>
-                    <pre class="brush:javascript;gutter:false;toolbar:false">
+                    <div>
+                        <pre class="brush:javascript;gutter:false;toolbar:false">
 $.require("lang", function() {
     var ret = $.oneObject([1, 2, 3], false)
     ret = $.dump(ret); //序列化
     $.log(ret, true); //打印在页面底部
 });
 </pre>
-                    <button class="doc_btn" onclick="exec1()">点我，执行代码</button>
+                        <button class="doc_btn" type="button">点我，执行代码</button>
+                    </div>
             </fieldset>
         </article>
     </body>
