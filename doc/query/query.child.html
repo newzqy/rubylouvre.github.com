@@ -47,12 +47,13 @@
         </style>
         <script type="text/javascript">
             $(function(){
-                $(".clicktable tbody td").click(function(){
+                $("body").delegate(".clicktable tbody td","click",function(){
                     var input =  $("input[type=checkbox]:first")
                     if(input.length){
                         input[0].indeterminate = true;
                     }
-                    $.parseJS(this.innerHTML.replace("&gt;",">").trim())
+                    var code = $.String.unescapeHTML( this.innerHTML )
+                    $.parseJS( code );
                 });
             })
         </script>
@@ -71,10 +72,10 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>$("p > span").css("background-color","red");</td>
+                            <td>$("p > span").css("bgc","red");</td>
                         </tr>
                         <tr>
-                            <td>$("p > [title]").css("background-color","darkorchid ");</td>
+                            <td>$("p > [title]").css("bgc","darkorchid ");</td>
                         </tr>
                     </tbody>
                 </table>
