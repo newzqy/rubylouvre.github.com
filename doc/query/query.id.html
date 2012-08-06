@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <title>query.target</title>
+        <title>query.id</title>
         <script type="text/javascript" src="/scripts/mass_merge.js"></script>
         <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
         <script type="text/javascript" src="/scripts/doc/common.js"></script>
@@ -61,9 +61,7 @@
     <article>
         
 
-
-<p>目标伪类。选出其name或id等于地址栏中#后的字符串（location.hash）的元素。</p>
-
+<p>并联选择器，也是CSS表达式中的逗号。</p>
 <fieldset><legend>例子</legend>
     <table class="clicktable" cellspacing="0" width="700" rules="cols" >
         <thead>
@@ -76,17 +74,25 @@
         <tbody>
             <tr>
                 <td>
-                    $("fieldset :target").css("bgc","red");
+                    $("#fanalfantasy").css("bgc","red");
                 </td>
             </tr>
         </tbody>
     </table>
     <pre class="brush:xml;gutter:false;toolbar:false">
-    <p id="show_url">这个用于动态显示location.href</p>
-    <p id="target">这个会被选中</p>
+  <div id="games">
+        <p id="fanalfantasy"class="bbb"> 最终幻想 | <span class="aaa">勇者斗恶龙 |</span><span class="ccc">女神转生| </span><span class="bbb">传说系列 </span></p>
+        <p class="aaa">荒野兵器 |<span title="hello">北欧女神 </span></p>
+        <p title="aaa">浪漫沙加|<span title="bye">王国之心 </span></p>
+        <p id="legend ">圣剑传说 |<span class="ccc eee" title="goodbye">幻想水浒传| </span><em>影之心 |<span class="aaa">格兰蒂亚 </span></em></p>
+    </div>
     </pre>
-    <p id="show_url">这个用于动态显示location.href</p>
-    <p id="target">这个会被选中</p>
+    <div id="games">
+        <p id="fanalfantasy"class="bbb"> 最终幻想 | <span class="aaa">勇者斗恶龙 |</span><span class="ccc">女神转生| </span><span class="bbb">传说系列 </span></p>
+        <p class="aaa">荒野兵器 |<span title="hello">北欧女神 </span></p>
+        <p title="aaa">浪漫沙加|<span title="bye">王国之心 </span></p>
+        <p id="legend ">圣剑传说 |<span class="ccc eee" title="goodbye">幻想水浒传| </span><em>影之心 |<span class="aaa">格兰蒂亚 </span></em></p>
+    </div>
 </fieldset>
 
     </article>

@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <title>query.target</title>
+        <title>query.contains</title>
         <script type="text/javascript" src="/scripts/mass_merge.js"></script>
         <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
         <script type="text/javascript" src="/scripts/doc/common.js"></script>
@@ -62,8 +62,7 @@
         
 
 
-<p>目标伪类。选出其name或id等于地址栏中#后的字符串（location.hash）的元素。</p>
-
+<p>内容包含伪类，:contains(expr)。如果元素含有expr所代表的文本内容，则会被选中，注意其最外层的引号是没有用，它大小写敏感。</p>
 <fieldset><legend>例子</legend>
     <table class="clicktable" cellspacing="0" width="700" rules="cols" >
         <thead>
@@ -76,17 +75,27 @@
         <tbody>
             <tr>
                 <td>
-                    $("fieldset :target").css("bgc","red");
+                    $(".sample div:contains('John')").css("text-decoration", "underline");
                 </td>
             </tr>
         </tbody>
     </table>
-    <pre class="brush:xml;gutter:false;toolbar:false">
-    <p id="show_url">这个用于动态显示location.href</p>
-    <p id="target">这个会被选中</p>
+    <pre class="brush:javascript;gutter:false;toolbar:false">
+    <div class="sample">
+        <div>John Resig</div>
+
+        <div>George Martin</div>
+        <div>Malcom John Sinclair</div>
+        <div>J. Ohn</div>
+    </div>
     </pre>
-    <p id="show_url">这个用于动态显示location.href</p>
-    <p id="target">这个会被选中</p>
+    <div class="sample">
+        <div>John Resig</div>
+
+        <div>George Martin</div>
+        <div>Malcom John Sinclair</div>
+        <div>J. Ohn</div>
+    </div>
 </fieldset>
 
     </article>

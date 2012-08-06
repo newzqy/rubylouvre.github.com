@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <title>query.target</title>
+        <title>query.order</title>
         <script type="text/javascript" src="/scripts/mass_merge.js"></script>
         <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
         <script type="text/javascript" src="/scripts/doc/common.js"></script>
@@ -61,9 +61,9 @@
     <article>
         
 
-
-<p>目标伪类。选出其name或id等于地址栏中#后的字符串（location.hash）的元素。</p>
-
+<p>位置伪类，:first, :last, :even, :odd, :eq(n), :gt(n), :lt(n)。</p>
+<p>它是根据上一个表达式得到的节点集合的索引值来选择元素的。如"div:first",它会得到一组DIV元素，然后取得第一个返回。</p>
+<p>此种伪类是非标准的，因此不建议使用。使用mass实例的同名方法，效果一致的。</p>
 <fieldset><legend>例子</legend>
     <table class="clicktable" cellspacing="0" width="700" rules="cols" >
         <thead>
@@ -76,19 +76,72 @@
         <tbody>
             <tr>
                 <td>
-                    $("fieldset :target").css("bgc","red");
+                    $("li:first").css("bgc","#FF9");
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    $("li:last").css("bgc","#6495ED");
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    $("li:even").css("bgc","#FF1493");
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    $("li:odd").css("bgc","#800080");
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    $("li:lt(4)").css("bgc","#E9967A");
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    $("li:gt(5)").css("bgc","#98FB98");
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    $("li:eq(3)").css("bgc","#FFF0F5");
                 </td>
             </tr>
         </tbody>
     </table>
     <pre class="brush:xml;gutter:false;toolbar:false">
-    <p id="show_url">这个用于动态显示location.href</p>
-    <p id="target">这个会被选中</p>
+ <ul>
+        <li>list item 1</li>
+        <li>list item 2</li>
+        <li>list item 3</li>
+        <li>list item 4</li>
+        <li>list item 5</li>
+    </ul>
+    <ul>
+        <li>list item 6</li>
+        <li>list item 7</li>
+        <li>list item 8</li>
+        <li>list item 9</li>
+        <li>list item 10</li>
+    </ul>
     </pre>
-    <p id="show_url">这个用于动态显示location.href</p>
-    <p id="target">这个会被选中</p>
+    <ul>
+        <li>list item 1</li>
+        <li>list item 2</li>
+        <li>list item 3</li>
+        <li>list item 4</li>
+        <li>list item 5</li>
+    </ul>
+    <ul>
+        <li>list item 6</li>
+        <li>list item 7</li>
+        <li>list item 8</li>
+        <li>list item 9</li>
+        <li>list item 10</li>
+    </ul>
 </fieldset>
-
     </article>
     </body>
 </html>
