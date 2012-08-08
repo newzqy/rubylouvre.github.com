@@ -128,31 +128,13 @@ $.define("api", function(){
         "类工厂模块": {
             "factory": "function"
         },
-        "选择器模块": {
-            "isXML": "function",
-            "contains": "function",
-            "getText": "function",
-            "unique": "function",
-            "query": "function"
-        },
-        "数据缓存模块": {
-            "@data": "object",
-            "data": "function",
-            "_data": "function",
-            "parseData": "function",
-            "removeData": "function",
-            "mergeData": "function"
-        },
         "节点模块": {
-            "implement": "function",
-            "extend": "function",
             "fn": {
                 "init": "function",
                 "mass": "number",
                 "length": "number",
                 "valueOf": "function",
                 "toString": "function",
-                "labor": "function",
                 "slice": "function",
                 "get": "function",
                 "eq": "function",
@@ -168,7 +150,6 @@ $.define("api", function(){
                 "clone": "function",
                 "html": "function",
                 "text": "function",
-                "outerHTML": "function",
                 "push": "function",
                 "unshift": "function",
                 "pop": "function",
@@ -210,9 +191,23 @@ $.define("api", function(){
                 "siblings": "function",
                 "contents": "function"
             },
+            "implement": "function",
+            "extend": "function",
             "match": "function",
-            "access": "function",
             "parseHTML": "function"
+        },
+        "选择器模块": {
+            "isXML": "function",
+            "contains": "function",
+            "getText": "function",
+            "unique": "function",
+            "query": "function"
+        },
+        "数据缓存模块": {
+            "data": "function",
+            "parseData": "function",
+            "removeData": "function",
+            "mergeData": "function"
         },
         "样式模块": {
             "fn": {
