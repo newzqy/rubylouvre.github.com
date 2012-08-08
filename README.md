@@ -1,3 +1,4 @@
-rubylouvre.github.com
+ï»¿rubylouvre.github.com
 =====================
-ÕâÊÇnewland.jsµÄ¹ÙÍø£¡
+è¿™æ˜¯newland.jsçš„å®˜ç½‘ï¼
+ç”±newland.jsåŠ¨æ€ç”Ÿæˆçš„é™æ€ç½‘ç«™!
