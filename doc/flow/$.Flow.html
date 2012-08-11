@@ -55,6 +55,34 @@
 <fieldset ><legend>例子</legend>
     <p>比如一个游戏，要通过QTE来打BOSS，需要迅速地按顺序按下S，D，F键发动攻击。如果使用普通事件监听来做，就非常复杂了。</p>
     <p>这时就需要用到操作流了。</p>
+     <pre class="brush:javascript;gutter:false;toolbar:false">
+       $.require("ready,flow",function(){
+          var flow = new $.Flow;
+          flow.bind("aaa,bbb,ccc", function(a,b,c){
+             $.log(a+" "+b+" "+c, true);
+             $.log(a+b+c,true)
+          });
+          flow.fire("bbb",2)
+          flow.fire("aaa",3)
+          flow.fire("ccc",7);
+          flow.fire("aaa",10);
+          flow.fire("bbb",11)
+          flow.fire("aaa",12)
+          $.log("=================")
+          var reload = new $.Flow;
+          reload.bind("aaa,bbb,ccc", function(a,b,c){
+             $.log(a+" "+b+" "+c, true);
+             $.log(a+b+c,true)
+          },true);
+          reload.fire("bbb",1)
+          reload.fire("aaa",2)
+          reload.fire("ccc",3);
+          reload.fire("aaa",10);
+          reload.fire("bbb",20);
+          reload.fire("ccc",40);
+     })
+     </pre>
+      <button class="doc_btn" type="button">点我，执行代码</button>
     <pre class="brush:javascript;gutter:false;toolbar:false">
             $.require("ready,event,flow",function(){
                 var keystateTime = 0, i = 0;
