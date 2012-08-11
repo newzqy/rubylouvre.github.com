@@ -123,6 +123,7 @@
                                 var self = $(this), btn = self.next("button.doc_btn")
                                 if(/brush:\s*j/i.test(this.className)  && btn.length ){
                                     var code =  $.String.unescapeHTML( this.innerHTML );
+                                    console.log(code)
                                     var fn = Function( code );
                                     btn[0].exec = fn;
                                 }
@@ -210,7 +211,7 @@
             <!--<h2>mass framework的文档</h2>-->
             <div>
                 <input id="search" autocomplete="off">
-                <a href="plugin.html">点此搜索插件</a>
+                <a href="plugin.html" style="color:#000;">点此搜索插件</a>
             </div>
             <div id="suggest_wrapper">
                 <ul id="suggest_list"></ul>
