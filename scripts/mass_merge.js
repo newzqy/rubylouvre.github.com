@@ -183,7 +183,7 @@ void function( global, DOC ){
         Ns.define.apply(Ns, args)
     }
     
-    function loadJS( name, url ){
+    function loadJS( name, url, parent ){
         url = url  || $[ "@path" ] +"/"+ name.slice(1) + ".js"
         url += (url.indexOf('?') > 0 ? '&' : '?') + '_time'+ new Date * 1;
         var iframe = DOC.createElement("iframe"),//IE9的onload经常抽疯,IE10 untest
@@ -247,7 +247,7 @@ void function( global, DOC ){
                 name  = "@"+ match[1];//取得模块名
                 if( !modules[ name ] ){ //防止重复生成节点与请求
                     modules[ name ] = { };//state: undefined, 未安装; 1 正在安装; 2 : 已安装
-                    loadJS( name, match[2] );//将要安装的模块通过iframe中的script加载下来
+                    loadJS( name, match[2], $["@path"] );//将要安装的模块通过iframe中的script加载下来
                 }else if( modules[ name ].state === 2 ){
                     cn++;
                 }
@@ -1515,7 +1515,7 @@ $.define("support", function(){
 // 类工厂模块
 //==========================================
 $.define("class", "lang",function(){
-   $.log("已加载类工厂模块")
+   //$.log("已加载类工厂模块")
     var
     unextend = $.oneObject(["_super","prototype", 'extend', 'implement' ]),
     rconst = /constructor|_init|_super/,
@@ -2187,18 +2187,8 @@ $.define( "node", "lang,support,class,query,data,ready",function( lang, support 
         not: function( expr ){
             return this.labor( filterhElement(this.valueOf(), expr, this.ownerDocument, true) );
         },
-        //判定当前匹配节点是否匹配给定选择器，DOM元素，或者mass对象
-        is: function( expr ){
-            var nodes = $.query( expr, this.ownerDocument ), obj = {}, uid;
-            for( var i = 0 , node; node = nodes[ i++ ];){
-                uid = $.getUid(node);
-                obj[uid] = 1;
-            }
-            return $.slice(this).some(function( el ){
-                return  obj[ $.getUid(el) ];
-            });
-        },
-        //取得匹配节点中那些后代中能匹配给定CSS表达式的节点，组成新mass实例返回。
+
+        //在当前的节点中，往下遍历他们的后代，收集匹配给定的CSS表达式的节点，封装成新mass实例返回
         has: function( expr ) {
             var nodes = $( expr, this.ownerDocument );
             return this.filter(function() {
@@ -2209,6 +2199,7 @@ $.define( "node", "lang,support,class,query,data,ready",function( lang, support 
                 }
             });
         },
+        // 在当前的节点中，往上遍历他们的祖先，收集最先匹配给定的CSS表达式的节点，封装成新mass实例返回
         closest: function( expr, context ) {
             var nodes = $( expr, context || this.ownerDocument ).valueOf();
             //遍历原mass对象的节点
@@ -2230,6 +2221,18 @@ $.define( "node", "lang,support,class,query,data,ready",function( lang, support 
             //将节点集合重新包装成一个新jQuery对象返回
             return this.labor( ret );
         },
+                //判定当前匹配节点是否匹配给定选择器，DOM元素，或者mass对象
+        is: function( expr ){
+            var nodes = $.query( expr, this.ownerDocument ), obj = {}, uid;
+            for( var i = 0 , node; node = nodes[ i++ ];){
+                uid = $.getUid(node);
+                obj[uid] = 1;
+            }
+            return $.slice(this).some(function( el ){
+                return  obj[ $.getUid(el) ];
+            });
+        },
+        //返回指定节点在其所有兄弟中的位置
         index: function( expr ){
             var first = this[0]
             if ( !expr ) {//如果没有参数，返回第一元素位于其兄弟的位置
@@ -3988,18 +3991,8 @@ $.define( "node", "lang,support,class,query,data,ready",function( lang, support 
         not: function( expr ){
             return this.labor( filterhElement(this.valueOf(), expr, this.ownerDocument, true) );
         },
-        //判定当前匹配节点是否匹配给定选择器，DOM元素，或者mass对象
-        is: function( expr ){
-            var nodes = $.query( expr, this.ownerDocument ), obj = {}, uid;
-            for( var i = 0 , node; node = nodes[ i++ ];){
-                uid = $.getUid(node);
-                obj[uid] = 1;
-            }
-            return $.slice(this).some(function( el ){
-                return  obj[ $.getUid(el) ];
-            });
-        },
-        //取得匹配节点中那些后代中能匹配给定CSS表达式的节点，组成新mass实例返回。
+
+        //在当前的节点中，往下遍历他们的后代，收集匹配给定的CSS表达式的节点，封装成新mass实例返回
         has: function( expr ) {
             var nodes = $( expr, this.ownerDocument );
             return this.filter(function() {
@@ -4010,6 +4003,7 @@ $.define( "node", "lang,support,class,query,data,ready",function( lang, support 
                 }
             });
         },
+        // 在当前的节点中，往上遍历他们的祖先，收集最先匹配给定的CSS表达式的节点，封装成新mass实例返回
         closest: function( expr, context ) {
             var nodes = $( expr, context || this.ownerDocument ).valueOf();
             //遍历原mass对象的节点
@@ -4031,6 +4025,18 @@ $.define( "node", "lang,support,class,query,data,ready",function( lang, support 
             //将节点集合重新包装成一个新jQuery对象返回
             return this.labor( ret );
         },
+                //判定当前匹配节点是否匹配给定选择器，DOM元素，或者mass对象
+        is: function( expr ){
+            var nodes = $.query( expr, this.ownerDocument ), obj = {}, uid;
+            for( var i = 0 , node; node = nodes[ i++ ];){
+                uid = $.getUid(node);
+                obj[uid] = 1;
+            }
+            return $.slice(this).some(function( el ){
+                return  obj[ $.getUid(el) ];
+            });
+        },
+        //返回指定节点在其所有兄弟中的位置
         index: function( expr ){
             var first = this[0]
             if ( !expr ) {//如果没有参数，返回第一元素位于其兄弟的位置
@@ -4808,7 +4814,7 @@ $.define( "css", !!top.getComputedStyle ? "node" : "node,css_fix" , function(){
             }
             return val
         };
-        var method = "scroll" + name;//scrollTop,scrollLeft只有读方法
+        var method = "scroll" + name;
         $.fn[ method ] = function( val ) {
             var node, win, t = name == "Top";
             if ( val === void 0 ) {
@@ -5962,9 +5968,19 @@ $.define("flow","class",function(){//~表示省略，说明lang模块与flow模�
             this.root = {};//数据共享,但策略自定
             this.uuid = $.getUid({})
         },
-        //names 可以为数组，用逗号作为分隔符的字符串
+        //names 可以为数组，用逗号作为分隔符的字符串，callback是回调函数，reload，布尔，可选，决定最后回调的第二次触发的条件
+        //flow.bind("aaa",fn);那么当我们调用flow.fire("aaa")就会立即执行fn这个回调
+        //flow.bind("aaa,bbb",fn1);那么只有当我们把flow.fire("aaa"),flow.fire("bbb")都执行了，才会执行fn1这个回调
+        //flow.fire("aaa")与flow.fire("bbb")的触发顺序是随意的
+        //flow.bind("aaa,bbb,ccc",fn2)，这时就需要触发了三个操作才执行fn2这个回调
+        //flow.bind("ddd",fn)，ddd与fn之间类似发布者订阅者这样的机制，一个操作（指ddd）可以绑定多个回调，如
+        //flow.bind("ddd",fn2);flow.bind("ddd",fn3);那么当flow.fire("ddd")时，它会依次执行fn,fn2,fn3这三个回调
+        //reload参数的使用，比如flow.bind("aaa,bbb,ccc,ddd",fn)，当我们先后flow.fire("aaa"),flow.fire("bbb"),
+        //flow.fire("ccc"),flow.fire("ddd")，那么fn就会第一次被触发！
+        //然后我再调用flow.fire("aaa"),fn就会被第二次触发；反正我们无论是fire上述那个操作，bbb也好，ccc也好，fn都会立即执行,
+        //不用着等到四个都触发才执行！只有当reload设置为true时，我们才需要每次把这个步骤都执行了一遍才触发fn。
         bind: function(names,callback,reload){
-            var  root = this.root, deps = {},args = [];
+            var  root = this.root, deps = {},args = []
             (names +"").replace($.rword,function(name){
                 name = "__"+name;//处理toString与valueOf等属性
                 if(!root[name]){
@@ -5986,16 +6002,19 @@ $.define("flow","class",function(){//~表示省略，说明lang模块与flow模�
             callback.reload = !!reload;//默认每次重新加载
             return this;
         },
-        unbind : function(array,fn){//$.multiUnind("aaa,bbb")
+        //移除某个操作的回调(1)或所有回调(2),或同时移除多个操作（3）
+        //(1)$.unbind("aaa")
+        //(2)$.unbind("aaa",fn)
+        //(3)$.unbind("aaa,bbb,ccc")
+        unbind : function(array,fn){
+            var names = [];
             if(/string|number|object/.test(typeof array) ){
-                var tmp = []
                 (array+"").replace($.rword,function(name){
-                    tmp.push( "__"+name)
+                    names.push( "__"+name)
                 });
-                array = tmp;
             }
             var removeAll = typeof fn !== "function";
-            for(var i = 0, name ; name = array[i++];){
+            for(var i = 0, name ; name = names[i++];){
                 var obj = this.root[name];
                 if(obj && obj.unfire){
                     obj.state = 1;
@@ -6063,6 +6082,19 @@ $.define("flow","class",function(){//~表示省略，说明lang模块与flow模�
 })
 //2012.6.8 对fire的传参进行处理
 //2012.7.13 使用新式的相对路径依赖模块
+/*
+ *一个简单的例子
+ $.require("flow", function(){
+                var node = new $.Flow();
+                node.bind("aaa", function(){
+                    $.log("aaa")
+                });
+                node.bind("aaa", function(){
+                    $.log("bbb")
+                });
+                node.fire("aaa")
+  })
+ */
 //=========================================
 //  数据交互模块
 //==========================================
