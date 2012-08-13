@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
-    
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <title>$.String.pad</title>
         <script type="text/javascript" src="/scripts/mass_merge.js"></script>
@@ -11,42 +10,42 @@
         <script type="text/javascript" src="/scripts/doc/shBrushJScript.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushCss.js"></script>
         <script type="text/javascript" src="/scripts/doc/shBrushXml.js"></script>
-        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/common.css"
-        />
-        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shCore.css"
-        />
-        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shThemeRDark.css"
-        />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/common.css" />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shCore.css" />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shThemeRDark.css" />
+
+        
+        
+
     </head>
-    
     <body>
         <article>
-            <h3>$.String.pad(digits,[filling],[right] [radix])</h3>
-            <p>
-                <span class="stress">描述：</span>
-            </p>
-            <p>在左边或右边补上一些字符。</p>
-            <dl>
-                <dt>digits</dt>
-                <dd>必需。Number。新字符的长度。</dd>
-                <dt>filling</dt>
-                <dd>可选。String。填空物，默认为"0"。</dd>
-                <dt>right</dt>
-                <dd>可选。布尔。不指明则往左边添加。</dd>
-                <dt>radix</dt>
-                <dd>可选。String。填空物，默认为10。</dd>
-            </dl>
-            <fieldset>
-                <legend>例子</legend>
-                <pre class="brush:javascript;gutter:false;toolbar:false">
-$.require("lang", function() {
-    var a = $.lang("B");
-    $.log(a.pad(4, "0", 0，16), true);
-});
-</pre>
-                <button class="doc_btn" type="button">点我，执行代码</button>
-            </fieldset>
-        </article>
-    </body>
+           
 
+<h3>$.String.pad(digits,[filling],[right] [radix])</h3>
+<p><span class="stress">描述：</span></p>
+<p>在左边或右边补上一些字符。</p>
+<dl>
+    <dt>digits</dt>
+    <dd>必需。Number。新字符的长度。</dd>
+    <dt>filling</dt>
+    <dd>可选。String。填空物，默认为"0"。</dd>
+      <dt>right</dt>
+    <dd>可选。布尔。不指明则往左边添加。</dd>
+    <dt>radix</dt>
+    <dd>可选。String。填空物，默认为10。</dd>
+</dl>
+<fieldset><legend>例子</legend>
+    <pre class="brush:javascript;gutter:false;toolbar:false">
+                $.require("lang",function(){
+                    var a = $.lang("B");
+                    $.log(a.pad(4,"0",0，16),true);
+                });
+    </pre>
+
+    <button class="doc_btn" type="button">点我，执行代码</button>
+</fieldset>
+
+        </article>
+   </body>
 </html>
