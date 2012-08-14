@@ -5971,7 +5971,7 @@ $.define("attr","support,node", function( support ){
 2012.6.23 attr在value为false, null, undefined时进行删除特性操作
 */
 //=========================================
-//  操作流模块,用于流程控制
+//  操作流模块v2,用于流程控制
 //==========================================
 $.define("flow","class",function(){//~表示省略，说明lang模块与flow模块在同一目录
     return $.Flow = $.factory({
