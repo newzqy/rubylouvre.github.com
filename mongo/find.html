@@ -523,7 +523,6 @@ var cursor2 = collection.find({},{
 });
 </pre>
 <br/>
-
 <h3>Cursor</h3>
 <p>此对象保存于find方法的返回值与回调中，用于细化查询结果。</p>
 <p>count操作，返回匹配的记录数</p>
@@ -564,10 +563,68 @@ users.find().count(function(err, n){
     console.log(n)
  })
 </pre>
+<p>sort方法,传入一个对象,值为正数与零为顺序,-1为倒序</p>
+<pre class="brush:javascript;gutter:false;toolbar:false">
+var mongodb = require('mongodb'),
+server = new mongodb.Server("127.0.0.1", 27017, {});
+new mongodb.Db('test', server, {}).open(function (error, db) {
+    db.collection("dogs",function(err,dogs){
+        dogs.insert( [{
+            "id" : 1 ,
+            name : "x",
+            ttm : 23,
+            val : 5
+        },
+        {
+            "id" : 1 ,
+            name : "x",
+            ttm : 34 ,
+            val : 1
+        },
+        {
+            "id" : 1 ,
+            name : "x",
+            ttm : 24 ,
+            val : 2
+        },
+        {
+            "id" : 2 ,
+            name : "x",
+            ttm : 56 ,
+            val : 3
+        },
+        {
+            "id" : 2 ,
+            name : "x",
+            ttm : 76 ,
+            val : 3
+        },
+        {
+            "id" : 3 ,
+            name : "x",
+            ttm : 54 ,
+            val : 7
+        }],{
+            safe: true
+        }, function(){
+            dogs.find({
+                "id" : {
+                    "$in" : [1,2,3]
+                    }
+            }).sort({
+                ttm : -1
+            }).limit(3).toArray(function(e, els){
+                console.log(els)
+            })
+        })
+    })
+});
+</pre>
 <p>rewind，回滚到上次操作之前，没有参数</p>
 <pre class="brush:javascript;gutter:false;toolbar:false">
 users.rewind()
 </pre>
+
 
 
 <pre class="brush:javascript;gutter:true;toolbar:true;collapse:true;">

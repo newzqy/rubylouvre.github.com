@@ -97,6 +97,39 @@ new mongodb.Db('test', server, {}).open(function (error, db) {
 });
 
 </pre>
+<p>取得一个集合的信息</p>
+<pre class="brush:javascript;gutter:false;toolbar:false">
+var mongodb = require('mongodb'),
+server = new mongodb.Server("127.0.0.1", 27017, {});
+new mongodb.Db('test', server, {}).open(function (error, db) {
+   db.indexInformation("eee",function(err,object){
+       console.log(err);
+       console.log(object);
+   })
+});
+</pre>
+<p>取得这个集合中某些元素的某个属性对应的值,并将这些值去重</p>
+<pre class="brush:javascript;gutter:false;toolbar:false">
+var mongodb = require('mongodb'),
+server = new mongodb.Server("127.0.0.1", 27017, {});
+new mongodb.Db('test', server, {}).open(function (error, db) {
+    db.collection("dogs",function(err,dogs){
+            dogs.distinct("id",{
+                "id" : {
+                    "$exists" : true
+                    }
+            },function(e,values){
+                console.log(e);
+                //返回匹配文档中所有id值,并进行去重
+                console.log(values)
+            })
+
+    })
+});
+
+</pre>
+
+
 <p> 当然集合还有insert, find, save, update, remove, distinct, count, findAndModify, findAndRemove,
     createIndex, ensureIndex, indexInformation, dropIndex, dropIndexes, reIndex, mapReduce,group, stats等方法</p>
         </article>
