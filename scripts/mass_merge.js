@@ -4276,7 +4276,7 @@ $.define("css_fix", !!top.getComputedStyle, function(){
         return ret === "" ? "auto" : border[ret] ||  ret;
     }
     var ident  = "DXImageTransform.Microsoft.Matrix"
-    //deg:degrees 角度,grad grads,百分度 rad    radians, 弧度
+    //deg:degrees 角度,grad grads,百分度 rad	radians, 弧度
     function toRadian(value) {
         return ~value.indexOf("deg") ?
         parseInt(value,10) *  Math.PI/180:
