@@ -23,22 +23,28 @@
            
 
 <h3>查询相关</h3>
-
-<p>find方法支持传入多个对象作为过滤条件得到我们想要的结果，如果想得到所有数据，可以什么都不传或只传个空对象</p>
-<pre class="brush:javascript;gutter:false;toolbar:false">
- var cursor = db.users.find({})
- var cursor = db.users.find()
+<p>find方法是一个collection对象的方法，不过它能迅速返回一个cursor对象（在没有回调的情况为返回值，有则为回调的第二个参数）进行更细致的操作。</p>
+<pre>
+collection.find(query[[[, fields], options], callback]);
 </pre>
-<p>它的所有传参形式</p>
+<ul>
+    <li><span class="stress">query：</span>查询对象</li>
+    <li><span class="stress">fields：</span>过滤对象，要求返回的文档应该只包含那些属性，默认是所有</li>
+    <li><span class="stress">options：</span>可选对象，包含排序，分页，过期等配置</li>
+    <li><span class="stress">callback：</span>没有出错的情况下，第二个参数为cursor对象</li>
+</ul>
+<p><span class="stress">选择所有</span></p>
 <pre class="brush:javascript;gutter:false;toolbar:false">
- *  - callback?
- *  - selector, callback?,
- *  - selector, fields, callback?
- *  - selector, options, callback?
- *  - selector, fields, options, callback?
- *  - selector, fields, skip, limit, callback?
- *  - selector, fields, skip, limit, timeout, callback?
+ var cursor = collection.find({})
+ var cursor = collection.find()
 </pre>
+<p><span class="stress">选择单个</span></p>
+<pre>
+collection.findOne([query], callback)
+</pre>
+<p>query为一个查询对象或一个_id的字符串</p>
+<hr/>
+<h4>查询</h4>
 <p>我们可以认为find方法的传参都为对象与最后面的可选回调，就算不是对象，它内部都会整成对象。</p>
 <pre class="brush:javascript;gutter:false;toolbar:false">
 db.users.find( { x : 3, y : "abc" } ).sort({x:1});
