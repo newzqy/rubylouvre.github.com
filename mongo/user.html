@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <title>用户相关</title>
+        <script type="text/javascript" src="/scripts/mass_merge.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
+        <script type="text/javascript" src="/scripts/doc/common.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushJScript.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushCss.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushXml.js"></script>
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/common.css" />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shCore.css" />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shThemeRDark.css" />
+
+        
+        
+
+    </head>
+    <body>
+        <article>
+           
+
+<h3>用户相关</h3>
+<pre class="brush:javascript;gutter:false;toolbar:false">
+var mongodb = require('mongodb'),
+server = new mongodb.Server("127.0.0.1", 27017, {});
+new mongodb.Db('test', server, {}).open(function (error, db) {
+  db.addUser("aaa","bbb",{safe:true} function(e,user){
+      console.log(e);
+      console.log(user)//插入成功显示 [ { user: 'aaa', pwd: 'f2dfb603a042a80d6f3d48b4e2151f9f' } ]
+  })
+});
+</pre>
+<p>验证用户</p>
+<pre class="brush:javascript;gutter:false;toolbar:false">
+var mongodb = require('mongodb'),
+server = new mongodb.Server("127.0.0.1", 27017, {});
+new mongodb.Db('test', server, {}).open(function (e, db) {
+  db.authenticate("aaa","bbb", function(e,ok){
+      console.log(e);
+      console.log(ok)//true
+  })
+});
+</pre>
+<p>移除用户</p>
+<pre class="brush:javascript;gutter:false;toolbar:false">
+var mongodb = require('mongodb'),
+server = new mongodb.Server("127.0.0.1", 27017, {});
+new mongodb.Db('test', server, {}).open(function (e, db) {
+  db.removeUser("aaa",{safe: true}, function(e,ok){
+      console.log(e);
+      console.log(ok)//true
+  })
+});
+</pre>
+http://stackoverflow.com/questions/4789045/how-can-i-set-up-mongodb-on-a-node-js-server-using-node-mongodb-native-in-an-ec2
+        </article>
+   </body>
+</html>
