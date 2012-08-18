@@ -6003,14 +6003,28 @@ $.define("attr","support,node", function( support ){
 //  操作流模块v2,用于流程控制
 //==========================================
 $.define("flow","class",function(){//~表示省略，说明lang模块与flow模块在同一目录
+    var uuid_arr =  '0123456789ABCDEFG'.split('');
     return $.Flow = $.factory({
         init: function(){
             this.root = {};//数据共享,但策略自定
-            this.uuid = $.getUid({})
+            this.id = this.id || this.uuid()
+        },
+        //https://github.com/louisremi/Math.uuid.js/blob/master/Math.uuid.js
+        uuid: function(){
+            var  uuid = [], r, i = 36;
+            uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+            uuid[14] = '4';
+            while (i--) {
+                if (!uuid[i]) {
+                    r = Math.random()*16|0;
+                    uuid[i] = uuid_arr[(i == 19) ? (r & 0x3) | 0x8 : r];
+                }
+            }
+            return uuid.join('');
         },
         
         bind: function(names,callback,reload){
-            var  root = this.root, deps = {},args = []
+            var root = this.root, deps = {},args = []
             String(names +"").replace($.rword,function(name){
                 name = "__"+name;//处理toString与valueOf等属性
                 if(!root[name]){
@@ -6070,12 +6084,12 @@ $.define("flow","class",function(){//~表示省略，说明lang模块与flow模�
                     return String(fn.args.sort()).indexOf(sorted) > -1
                 })
             }
-            if($.type(opts.match,"RegExp")){
+            if( $.type( opts.match,"RegExp" ) ){
                 var reg = opts.match;
                 callbacks = callbacks.filter(function(fn){
                     for(var i = 0, n = fn.args.length; i < n ;i++){
                         var name = fn.args[i].slice(2);
-                        if(reg.test(name)){
+                        if( reg.test( name ) ){
                             return true;
                         }
                     }
@@ -6084,8 +6098,8 @@ $.define("flow","class",function(){//~表示省略，说明lang模块与flow模�
             }
             return callbacks;
         },
-        append: function(names, name){
-            var callback = this.find(names);
+        append: function( names, name ){
+            var callback = this.find( names );
             var root = this.root
             name = "__"+name;
             callback.forEach(function(fn){
@@ -6166,7 +6180,7 @@ $.define("flow","class",function(){//~表示省略，说明lang模块与flow模�
                 try{
                     this.fire.apply(this, arguments);
                 }catch(e){
-                    this.fire( "__error__", e);//如果发生异常，抛出500错误
+                    this.fire( "error_" + this.id, e);//如果发生异常，抛出500错误
                 }
             }else{//执行fired数组中的回调
                 for (i = fired.length; fn = fired[--i]; ) {
