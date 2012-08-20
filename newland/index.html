@@ -46,6 +46,28 @@ flow.removeCookie("oldCookie")
 //传入一个字符串数组，同时删除多个cookie
 flow.removeCookie(["myCookie","uuer","newCookie"])
 </pre>
+
+<p>Session相关</p>
+<p>newland.js暂时提供三种sesson，基于内存的，基于cookie的，基于mongo数据库的。</p>
+<p>下面是app/config中相关的配置</p>
+<pre class="brush:javascript;gutter:false;toolbar:false">
+        //默认session配置,必需加载get_cookie服务，否则无效
+        session: {
+            type: "cookie",//可选值有mongo, cookie, memory
+            sid:   "mass_sid",//sessionID
+            table: "sessions",//这个type=mongo时，决定存放在哪个集合中
+            life: 60 * 10 //生命周期，单位ms
+        },
+</pre>
+<p>使用。只能在action与模板中使用，操作目标为flow.session</p>
+<pre class="brush:javascript;gutter:false;toolbar:false">
+   flow.session.aaa = "xxx"
+   delete flow.session.aaa
+   flow.session.bbb = ["11","22"]
+</pre>
+<p>在类型为cookie的情况下，你大可以把它当成一个JSON，意味着session的成员不能为函数，同时你也要注意长度不能大于4k</p>
+<p>在类型为memory或mongo的情况下，成员是任意的，大小理论上也不受限。<p>
+<p>session是用于在action中交互数据，因此生命周期不宜设得很长。</p>
         </article>
    </body>
 </html>
