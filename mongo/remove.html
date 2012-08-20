@@ -27,6 +27,7 @@
 collection.remove([[query[, options]], callback]);
 </pre>
 <p>callback的第二个参数为被移除的文档组成的数组</p>
+<p>我们先插入一些小白鼠：</p>
 <pre class="brush:javascript;gutter:false;toolbar:false">
 var mongodb = require('mongodb'),
 server = new mongodb.Server("127.0.0.1", 27017, {});
