@@ -34,7 +34,7 @@ mapper.add(method, pathname, controller+"#"+action)
 <ul>
     <li>method，是指GET，POST，PUT，DELETE这四种请求类型</li>
     <li>pathname，是指请求URL中去掉host,port,hash,query的部分,亦即req.url,它是以\隔开,如果是可选的请用小括号括起,
-        如果该值要放到参数对象中,请加:前缀.</li>
+    如果该值要放到参数对象中,请加:前缀.</li>
     <li>controller+"#"+action,就是控制器的名字加action的名字</li>
 </ul>
 <pre class="brush:javascript;gutter:false;toolbar:false">
@@ -61,7 +61,7 @@ mapper.add(method, pathname, controller+"#"+action)
  mapper.add( "GET",     "/users/:id/edit(.:format)","users#edit")
  mapper.add( "PUT",     "/users/:id(.:format)",     "users#update")
  mapper.add("DELETE",   "/users/:id(.:format)",     "users#destroy")
-
+ 
 </pre>
 <p>如果不想生成这么多,我们还可以对资源路由进行制定</p>
 <pre class="brush:javascript;gutter:false;toolbar:false">
@@ -81,16 +81,16 @@ $.log( flow.cookies ) //{ __atuvc: '2|25', myCookie: 'xxxxxxxxxx', newCookie: 'd
  map.namespace("tests",function(tests){
      tests.resources('comments');
  });
-</pre>
+ </pre>
 <p>套嵌路由</p>
 <pre class="brush:javascript;gutter:false;toolbar:false">
  map.resources('posts', function (post) {
        post.resources('users')
  });
-</pre>
+ </pre>
 <p>添加cookie</p>
 <pre class="brush:javascript;gutter:false;toolbar:false">
-//格式：flow.addCookie(name, val, opts)
+//flow.addCookie(name, val, opts)
  flow.addCookie("ACookie","xxxxxxxxxx");
  flow.addCookie("BCookie","yyyyyyyyy");
  flow.addCookie('rememberme', 'yes', { expires: 0, httpOnly: true })
