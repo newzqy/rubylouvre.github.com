@@ -43,7 +43,7 @@ mapper.add(method, pathname, controller+"#"+action)
     mapper.add("GET","/:yyyy/:mm/:dd","blog#page")  //flow.params => {yyyy:2012,mm:09, dd:02}
     mapper.add("GET","doc/:modules(/:method)","doc#index") //flow.params => {modules:"flow",method:"append"}
 </pre>
-</p>它的一种变种,方法路由,就是省略最前面的参数</P>
+<p>它的一种变种,方法路由,就是省略最前面的参数</p>
 <pre class="brush:javascript;gutter:false;toolbar:false">
         mapper.get("/mongo/(:method)","mongo#index")
         mapper.get("/tabs","home#tabs")
