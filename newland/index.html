@@ -77,7 +77,7 @@ map.resources('users', {except: ['create', 'destroy']});
 <p>如果没有加载logger服务，它是不会打印到指定文件中，但即使这样$.log还是强得逆天。</p>
 <p>$.log的语法，除了第一个参数，其他参数都是可选，并且位置是不固定的。</p>
 <pre>
-$.log(obj,[ color, formatArray,timestamp, level ] )
+$.log(obj,[ style, formatArray,timestamp, level ] )
 </pre>
 <ul>
     <li>obj <strong>任意类型</strong> 如果要打印到后台，它会调用util模块的inspect方法进行转换</li>
