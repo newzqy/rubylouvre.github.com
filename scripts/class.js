@@ -1,8 +1,8 @@
 //=========================================
-// 类工厂模块
+// 类工厂模块 by 司徒正美
 //==========================================
-$.define("class", "lang",function(){
-   //$.log("已加载类工厂模块")
+define("class", ["$lang"], function(){
+   $.log("已加载类工厂模块",7)
     var
     unextend = $.oneObject(["_super","prototype", 'extend', 'implement' ]),
     rconst = /constructor|_init|_super/,
@@ -91,6 +91,7 @@ $.define("class", "lang",function(){
     }
 });
 /**
+ change log:
 2011.7.11 将$["class"]改为$["@class"] v4
 2011.7.25
 继承链与方法链被重新实现。
@@ -105,4 +106,5 @@ fix 子类实例不是父类的实例的bug
 2012.2.25 改进setOptions，可以指定在this上扩展还是在this.XXX上扩展
 2012.2.26 重新实现方法链，抛弃arguments.callee.caller   v8
 2012.7.22 v10 大幅简化,去掉defineProperty与方法链
+https://gist.github.com/2990054
 */

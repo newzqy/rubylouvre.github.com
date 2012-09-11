@@ -4,7 +4,7 @@
         ).replace($.rword,function(tag){
         document.createElement(tag)
     });
- 
+
     if(self.eval !== top.eval){
         window.$ && $.require("ready,css,node",function(){
             parent.callParent && parent.callParent(document);

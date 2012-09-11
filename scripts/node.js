@@ -1,9 +1,9 @@
 //==================================================
 // 节点操作模块
 //==================================================
-$.define( "node", "lang,support,class,query,data,ready",function( lang, support ){
-    $.log("已加载node模块");
-    var rtag = /^[a-zA-Z]+$/, rtext =/option|script/i, TAGS = "getElementsByTagName"
+define( "node", ["$lang","$support","$class","$query","$data","ready"],function( lang, support ){
+    $.log("已加载node模块",7);
+    var rtag = /^[a-zA-Z]+$/, TAGS = "getElementsByTagName"
     function getDoc(){
         for( var i  = 0 , el; i < arguments.length; i++ ){
             if( el = arguments[ i ] ){
@@ -515,6 +515,7 @@ $.define( "node", "lang,support,class,query,data,ready",function( lang, support 
             // 复制自定义属性，事件也被当作一种特殊的能活动的数据
             if ( dataAndEvents ) {
                 $.mergeData( neo, node );
+                            console.log(neo)
                 if ( deepDataAndEvents ) {
                     src =  node[ TAGS ]( "*" );
                     neos = neo[ TAGS ]( "*" );

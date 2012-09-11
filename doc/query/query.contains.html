@@ -1,65 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <title>query.contains</title>
-        <script type="text/javascript" src="/scripts/mass_merge.js"></script>
-        <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
-        <script type="text/javascript" src="/scripts/doc/common.js"></script>
-        <script type="text/javascript" src="/scripts/doc/shBrushJScript.js"></script>
-        <script type="text/javascript" src="/scripts/doc/shBrushCss.js"></script>
-        <script type="text/javascript" src="/scripts/doc/shBrushXml.js"></script>
-        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/common.css" />
-        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shCore.css" />
-        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shThemeRDark.css" />
 
-        
-        
-        <style type="text/css">
-            ul{
-                list-style-image: url(../public/images/li.gif)
-            }
-            .list {
-                color:#FF6363;
-                font-weight:bolder;
-            }
-            table.clicktable {
-                border-collapse:collapse;
-                border:#8a6100 1px solid;
-            }
-            table.clicktable th{
-                border:#8a6100 2px solid;
-                border-color:  #ffe3a4 #ffe3a4 #8a6100 #8a6100;
-                color: #ffff00;
-                background:#e19d00;
-            }
-            table.clicktable td{
-                border:#8a6100 1px   inset;
-                background:#EEE8AA;
-                color:#000;
-            }
-            table.clicktable tr.even td{
-                background:#FF7F50;
-                color:#8B4513;
-            }
-        </style>
-        <script type="text/javascript">
-            $(function(){
-                $("body").delegate(".clicktable tbody td","click",function(){
-                    var input =  $("input[type=checkbox]:first")
-                    if(input.length){
-                        input[0].indeterminate = true;
-                    }
-                    var code = $.String.unescapeHTML( this.innerHTML )
-                    $.parseJS( code );
-                });
-            })
-        </script>
-    </head>
-    <body>
-    <article>
-        
 
 
 <p>内容包含伪类，:contains(expr)。如果元素含有expr所代表的文本内容，则会被选中，注意其最外层的引号是没有用，它大小写敏感。</p>
@@ -97,7 +36,3 @@
         <div>J. Ohn</div>
     </div>
 </fieldset>
-
-    </article>
-    </body>
-</html>
