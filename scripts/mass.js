@@ -1,14 +1,14 @@
 + function( global, DOC ){
-    var  _$ = global.$//保存已有同名变量
+    var $$ = global.$//保存已有同名变量
     var rmakeid = /(#.+|\W)/g;
-    var namespace = DOC.URL.replace( rmakeid,'')
-    var w3c = DOC.dispatchEvent //w3c事件模型
-    var HTML = DOC.documentElement;
-    var HEAD = DOC.head || DOC.getElementsByTagName( "head" )[0]
-    var commonNs = global[ namespace ];//公共命名空间
+    var NsKey = DOC.URL.replace( rmakeid,'')
+    var NsVal = global[ NsKey ];//公共命名空间
+    var W3C   = DOC.dispatchEvent //w3c事件模型
+    var HTML  = DOC.documentElement;
+    var HEAD  = DOC.head || DOC.getElementsByTagName( "head" )[0]
+    var loadings = [];//正在加载中的模块列表
     var mass = 1;//当前框架的版本号
     var postfix = "";//用于强制别名
-    var loadings = [];//正在加载中的模块列表
     var cbi = 1e5 ; //用于生成回调函数的名字
     var all = "lang_fix,lang,support,class,flow,query,data,node,attr,css_fix,css,event_fix,event,ajax,fx"
     var class2type = {
@@ -21,8 +21,8 @@
         "null"                    : "Null"    ,
         "NaN"                     : "NaN"     ,
         "undefined"               : "Undefined"
-    },
-    toString = class2type.toString;
+    }
+    var toString = class2type.toString;
     function $( expr, context ){//新版本的基石
         if( $.type( expr,"Function" ) ){ //注意在safari下,typeof nodeList的类型为function,因此必须使用$.type
             return  $.require( all+",ready", expr );
@@ -33,13 +33,13 @@
         }
     }
     //多版本共存
-    if( typeof commonNs !== "function"){
-        commonNs = $;//公用命名空间对象
-        commonNs.uuid = 1;
+    if( typeof NsVal !== "function"){
+        NsVal = $;//公用命名空间对象
+        NsVal.uuid = 1;
     }
-    if(commonNs.mass !== mass  ){
-        commonNs[ mass ] = $;//保存当前版本的命名空间对象到公用命名空间对象上
-        if(commonNs.mass || (_$ && _$.mass == null)) {
+    if(NsVal.mass !== mass  ){
+        NsVal[ mass ] = $;//保存当前版本的命名空间对象到公用命名空间对象上
+        if(NsVal.mass || ($$ && $$.mass == null)) {
             postfix = ( mass + "" ).replace(/\D/g, "" ) ;//是否强制使用多库共存
         }
     }else{
@@ -75,13 +75,13 @@
         mix: mix,
         rword: /[^, ]+/g,
         mass: mass,//大家都爱用类库的名字储存版本号，我也跟风了
-        "@bind": w3c ? "addEventListener" : "attachEvent",
+        "@bind": W3C ? "addEventListener" : "attachEvent",
         //将内部对象挂到window下，此时可重命名，实现多库共存  name String 新的命名空间
         exports: function( name ) {
-            _$ && ( global.$ = _$ );//多库共存
+            $$ && ( global.$ = $$ );//多库共存
             name = name || $.config.nick;//取得当前简短的命名空间
             $.config.nick = name;
-            global[ namespace ] = commonNs;
+            global[ NsKey ] = NsVal;
             return global[ name ]  = this;
         },
         /**
@@ -176,14 +176,14 @@
         },
         //用于建立一个从元素到数据的引用，用于数据缓存，事件绑定，元素去重
         getUid: global.getComputedStyle ? function( obj ){
-            return obj.uniqueNumber || ( obj.uniqueNumber = commonNs.uuid++ );
+            return obj.uniqueNumber || ( obj.uniqueNumber = NsVal.uuid++ );
         }: function( obj ){
             if(obj.nodeType !== 1){
-                return obj.uniqueNumber || ( obj.uniqueNumber = commonNs.uuid++ );
+                return obj.uniqueNumber || ( obj.uniqueNumber = NsVal.uuid++ );
             }
             var uid = obj.getAttribute("uniqueNumber");
             if ( !uid ){
-                uid = commonNs.uuid++;
+                uid = NsVal.uuid++;
                 obj.setAttribute( "uniqueNumber", uid );
             }
             return +uid;//确保返回数字
@@ -233,13 +233,17 @@
         cur = scripts[ scripts.length - 1 ];//FF下可以使用DOC.currentScript
         var url = cur.hasAttribute ?  cur.src : cur.getAttribute( 'src', 4 );
         url = url.replace(/[?#].*/, '');
-        var str = cur.getAttribute("debug");
+        var a = cur.getAttribute("debug");
+        var b = cur.getAttribute("storage");
         var kernel = $.config;
-        kernel.debug = str == 'true' || str == '1';
+        kernel.debug = a == 'true' || a == '1';
+        kernel.storage = b == 'true' || b == '1';
         kernel.base = url.substr( 0, url.lastIndexOf('/') ) +"/";
         kernel.nick = cur.getAttribute("nick") || "$";
+        kernel.erase = cur.getAttribute("erase") || "erase";
         kernel.alias = {};
         kernel.level = 9;
+
     })(DOC.getElementsByTagName( "script" ));
 
     $.noop = $.error = $.debug = function(){};
@@ -257,8 +261,8 @@
         this.children = [];
     }
     Module._load = function( url, parent) {
-        url = Module._resolveFilename( url, parent.id )[0];
-        var module = Module._cache[url];
+        url = Module._resolve( url, parent.id )[0];
+        var module = Module._cache[ url ];
         if (module) {
             return module.exports;
         }
@@ -283,7 +287,7 @@
             return Module._load(path, self)
         }
     }
-    Module._resolveFilename = function(url, parent, ret){
+    Module._resolve = function(url, parent, ret){
         //[]里面，不是开头的-要转义，因此要用/^[-a-z0-9_$]{2,}$/i而不是/^[a-z0-9_-$]{2,}
         //别名至少两个字符；不用汉字是避开字符集的问题
         if( url === "ready"){//特别处理ready标识符
@@ -325,25 +329,24 @@
     var modules = $.modules = Module._cache = {};
     Module._update( "ready" );
     var rrequire = /[^.]\s*require\s*\(\s*["']([^'"\s]+)["']\s*\)/g;
-    var rcomment = /\/\/.*?[\r\n]|\/\*(?:.|[\r\n])*?\*\//g;
+    var rcomment =  /\/\*(?:[^*]|\*+[^\/*])*\*+\/|\/\/.*/g
     var rparams =  /[^\(]*\(([^\)]*)\)[\d\D]*/;//用于取得函数的参数列表
     $.mix({
         //绑定事件(简化版)
-        bind: w3c ? function( el, type, fn, phase ){
+        bind: W3C ? function( el, type, fn, phase ){
             el.addEventListener( type, fn, !!phase );
             return fn;
         } : function( el, type, fn ){
             el.attachEvent && el.attachEvent( "on"+type, fn );
             return fn;
         },
-        unbind: w3c ? function( el, type, fn, phase ){
+        unbind: W3C ? function( el, type, fn, phase ){
             el.removeEventListener( type, fn || $.noop, !!phase );
         } : function( el, type, fn ){
             if ( el.detachEvent ) {
                 el.detachEvent( "on" + type, fn || $.noop );
             }
         },
-        resolveFilename: Module._resolveFilename,
         //请求模块（依赖列表,模块工厂,加载失败时触发的回调）
         require: function( list, factory, parent ){
             var deps = {}, // 用于检测它的依赖是否都为2
@@ -351,11 +354,12 @@
             dn = 0,         // 需要安装的模块数
             cn = 0;         // 已安装完的模块数
             String(list).replace( $.rword, function(el){
-                var array = Module._resolveFilename(el, parent || $.config.base ), url = array[0];
+                var array = Module._resolve(el, parent || $.config.base ), url = array[0];
                 if(array[1] == "js"){
                     dn++
                     //如果没有注册，则先尝试通过本地获取，如果本地不存在或不支持，则才会出请求
-                    if( (!modules[ url ]) && loadStorage( url ) ){
+                    loadStorage( url )
+                    if( (!modules[ url ])  ){//&& loadStorage( url )
                         loadJS( url, parent );
                     }else if( modules[ url ].state === 2 ){
                         cn++;
@@ -391,14 +395,17 @@
                 [].splice.call( args, 1, 0, [] );
             }
             if(typeof args[2] == "function"){
-                var factroy = args[2].toString().replace(rcomment,"")
-                factroy.replace(rrequire,function(a,b){
+                var factroy = args[2].toString()
+                .replace(rcomment,"")
+                .replace(rrequire,function(a,b){
                     args[1].push(b);//将模块工厂中以node.js方式加载的模块也加载进来
+                    return a;
                 });
-                if(this.exports){
-                    Storage.setItem( this.id+"_args", args[1]+"")
-                    Storage.setItem( this.id+"_parent", this.parent)
-                    Storage.setItem( this.id,factroy )
+                if(this.exports && this.id && $.config.storage && !Storage.getItem( this.id) ){
+                    Storage.setItem( this.id, factroy);
+                    Storage.setItem( this.id+"_deps", args[1]+"");
+                    Storage.setItem( this.id+"_parent",  this.parent);
+                    Storage.setItem( this.id+"_version", new Date - 0);
                 }
             }else{
                 var ret = args[2];
@@ -432,14 +439,22 @@
                     $._checkDeps();
                 }
             }
+        },
+        erase : function( id, v ){
+            if(id == void 0){
+                Storage.clear();
+            }else{
+                var old = Storage.getItem( id+"_version" );
+                if(old && (!v || v > Number(old)) ){
+                    Storage.removeItem( id );
+                    Storage.removeItem( id+"_deps" )
+                    Storage.removeItem( id+"_parent" )
+                    Storage.removeItem( id+"_version" )
+                }
+            }
         }
-
     });
-    var Storage =  {
-        setItem: $.noop,
-        getItem: $.noop,
-        removeItem: $.noop
-    }
+    var Storage = $.oneObject("setItem,getItem,removeItem,clear",$.noop);
     if( global.localStorage){
         Storage = localStorage;
     }else if( HTML.addBehavior){
@@ -451,7 +466,7 @@
         function curry(fn) {
             return function(a, b) {
                 HTML.load("massdata");
-                a = a.replace(rstoragekey, function(w){
+                a = String(a).replace(rstoragekey, function(w){
                     return w.charCodeAt(0);
                 })
                 var result = fn( a, b );
@@ -464,30 +479,42 @@
                 HTML.setAttribute(key, val);
             }),
             getItem: curry(function(key){
-                $.log(key,true)
                 return HTML.getAttribute(key);
             }),
             removeItem: curry(function(key){
                 HTML.removeAttribute(key);
-            })
+            }),
+            clear: function(){
+                var attributes = HTML.XMLDocument.documentElement.attributes
+                for (var i=0, attr; attr=attributes[i]; i++) {
+                    HTML.removeAttribute(attr.name)
+                }
+            }
         }
+    }
+    var rerase = new RegExp('(?:^| )' + $.config.erase + '(?:(?:=([^;]*))|;|$)')
+    var match = String(DOC.cookie).match( rerase );
+    //读取从后端过来的cookie指令，转换成一个对象，键名为模块的URL，值为版本号（这是一个时间戮）
+    if(match && match[1]){
+        try{
+            var obj = eval("0,"+match[1]);
+            for(var i in obj){//$.erase会版本号比现在小的模块从本地储存中删掉
+                $.erase(i, obj[i])
+            }
+        }catch(e){}
     }
     function loadStorage( id ){
         var factory =  Storage.getItem( id);
-        if(!!factory){
+        if(factory && !modules[id]){
             var parent = Storage.getItem(id+"_parent");
-            var deps = Storage.getItem(id+"_args") ;
-            deps = deps ?  deps.match($.rword) : "";
-            Module._update(id, parent);
-            var module = $.modules[id];
-            module.state = 1;
-            var fn = Function( "$,module,exports,require","return "+ factory )
+            var deps = Storage.getItem(id+"_deps");
+            deps = deps ?  deps.match( $.rword ) : "";
+            Module._update( id, parent );
+            var module = $.modules[ id ];
+            module.state =  module.state || 1;
+            var fn = Function( "$,module,exports,require,define","return "+ factory )
             ($, module, module.exports, module.require());
-            $.log("这是通过本地储存来获取目标模块", 7);
             $.define( id, deps, fn );
-            return false;
-        }else{
-            return true;
         }
     }
 
@@ -545,10 +572,10 @@
             args[ last ] =  parent.Function( "$,module,exports,require","return "+ args[ last ] )
             (Ns, module, module.exports, module.require());//使用curry方法劫持模块自身到require方法里面
         }
-        //将iframe中的函数转换为父窗口的函数
-        Ns.define.apply(module, args)
+        Ns.define.apply(module, args);  //将iframe中的函数转换为父窗口的函数
     }
 
+    
     function install( id, deps, callback ){
         for ( var i = 0, array = [], d; d = deps[i++]; ) {
             array.push( modules[ d ].exports );//从returns对象取得依赖列表中的各模块的返回值
@@ -563,7 +590,6 @@
         var a = common[match[0]];
         var b = common[match[1]];
         var c = common[match[2]];
-        //  console.log([a,b,c])
         if( a && b && a != b && b != c  ){//exports, require, module的位置随便
             ret =  callback.apply(global, [a, b, c]);
         }else{
@@ -579,7 +605,7 @@
         $.config.alias[ "$"+a ] = $.config.base + a + ".js"
     });
     //domReady机制
-    var readyFn, ready =  w3c ? "DOMContentLoaded" : "readystatechange" ;
+    var readyFn, ready =  W3C ? "DOMContentLoaded" : "readystatechange" ;
     function fireReady(){
         modules[ "ready" ].state = 2;
         $._checkDeps();
@@ -601,7 +627,7 @@
         fireReady();//如果在domReady之外加载
     }else {
         $.bind( DOC, ready, readyFn = function(){
-            if ( w3c || DOC.readyState === "complete" ){
+            if ( W3C || DOC.readyState === "complete" ){
                 fireReady();
             }
         });
@@ -657,12 +683,12 @@
     }
     //https://developer.mozilla.org/en/DOM/window.onpopstate
     $.bind( global, "popstate", function(){
-        namespace = DOC.URL.replace(rmakeid,'');
+        NsKey = DOC.URL.replace(rmakeid,'');
         $.exports();
     });
     $.exports( $.config.nick +  postfix );//防止不同版本的命名空间冲突
 /*combine modules*/
-// console.log($["@path"])
+
 }( self, self.document );//为了方便在VS系列实现智能提示,把这里的this改成self或window
 
 
@@ -747,5 +773,9 @@ http://news.cnblogs.com/n/157042/
 http://www.cnblogs.com/beiyuu/archive/2011/07/18/iframe-tech-performance.html iframe异步加载技术及性能
 http://www.cnblogs.com/lhb25/archive/2012/09/11/resources-that-complement-twitter-bootstrap.html
 http://www.cnblogs.com/rainman/archive/2011/06/22/2086069.html
+http://www.infoq.com/cn/articles/how-to-create-great-js-module 优秀的JavaScript模块是怎样炼成的
+https://github.com/aralejs
+http://y.duowan.com/resources/js/jsFrame/demo/index.html
+https://github.com/etaoux/brix
  */
 
