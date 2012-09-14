@@ -20,8 +20,11 @@
         <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shCore.css" />
         <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shThemeRDark.css" />
         <script>
+            try{
+                 $.erase();
+            }catch(e){}
             $.require("ready,./more/tab", function(){
-                $.log("ready")
+                $.log("ready");
             })
         </script>
 
