@@ -139,8 +139,13 @@ define("avalon",["$attr","$event"], function(){
                 }
                 bridge[ expando ] = Watch;
             }
-            var fn = Function(names, "return "+ str), callback, val;
-            val = fn.apply(null, values );
+            var callback, val;
+            try{
+               
+                val = Function(names, "return "+ str).apply(null, values );
+            }catch(e){
+                return
+            }
             if(typeof val == "function" ){ //&& isFinite( val.$uuid ) 如果返回值也是个域
                 callback = val; //这里的域为它所依赖的域
                 val = callback();//如果是监控体
@@ -154,7 +159,6 @@ define("avalon",["$attr","$event"], function(){
             var method = arguments[0], args = arguments[1]
             if( typeof binding[method] == "function" ){
                 //处理foreach.start, sort, reserve, unshift, shift, pop, push
-                $.log(method)
                 binding[method]( Watch, model[str], Watch.fragments, method, args );
             }
             //这里需要另一种指令！用于处理数组增删改查与排序
@@ -196,7 +200,7 @@ define("avalon",["$attr","$event"], function(){
             stopBindings: true
         },
         //通过display样式控制显隐
-        visible: {
+        display: {
             update:  function( node, val ){
                 node.style.display = val ? "" : "none";
             }
@@ -444,6 +448,7 @@ define("avalon",["$attr","$event"], function(){
             key = array[i]
             val = array[i+1];
             binding = $.ViewBindings[ key ];
+            $.log(key+"!!!!!!!!!!!!!!")
             if( binding ){
                 if( binding.stopBindings ){
                     continueBindings = false;

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <title>value绑定</title>
+        <script type="text/javascript" src="/scripts/mass_merge.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
+        <script type="text/javascript" src="/scripts/doc/common.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushJScript.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushCss.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushXml.js"></script>
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/common.css"
+        />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shCore.css"
+        />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shThemeRDark.css"
+        />
+    </head>
+    
+    <body>
+        <article>
+            <h1>value绑定</h1>
+            <p>第一个传参将强制转换为字符串，假值为""，然后变成目标节点的value属性,并同时对此元素进行input或propertychange监听。</p>
+            <script>
+                $.require("ready,./more/avalon", function(){
+                    var model = $.ViewModel({
+                        content:"司徒正美"
+                    });
+                    $.View(model);
+                })
+            </script>
+            <fieldset>
+                <legend>示例</legend>
+                <input bind="value: content">
+                <br/>
+                <input bind="value: content">
+            </fieldset>
+            <p>HTML：</p>
+            <pre class="brush:xml;gutter:false;toolbar:false">
+
+   &lt;input bind="value: content"&gt;&lt;br/&gt;
+   &lt;input bind="value: content"&gt;
+
+</pre>
+            <p>JS。</p>
+            <pre class="brush:js;gutter:false;toolbar:false">
+$.require("ready,./more/avalon", function() {
+    var model = $.ViewModel({
+        content: "司徒正美"
+    });
+    $.View(model);
+})
+</pre>
+            <p>
+                <a href="/mvvm">返回教程首页</a>
+            </p>
+        </article>
+    </body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <title>class绑定</title>
+        <script type="text/javascript" src="/scripts/mass_merge.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
+        <script type="text/javascript" src="/scripts/doc/common.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushJScript.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushCss.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushXml.js"></script>
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/common.css"
+        />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shCore.css"
+        />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shThemeRDark.css"
+        />
+    </head>
+    
+    <body>
+        <article>
+            <h1>class绑定</h1>
+            <p>用于为元素添加或移除指定的元素。</p>
+            <p>如果传参是一个对象，则遍历对象，将为真值的键名作为元素的新类名， 如果为假则移除此类名。如果传参为字符串，也作新类名添加给元素。</p>
+            <style>
+                .my-class{
+                    color: yellow;
+                    background:orange;
+                }
+                .your-class {
+                    line-height:3;
+                    width:200px;
+                }
+                .his-class{
+                    text-indent:2em;
+                    font-size:14px;
+                }
+            </style>
+            <script>
+                $.require("ready,./more/avalon", function(){
+                    var model = $.ViewModel( {
+                        someValue:true,
+                        otherValue:true,
+                        moreValue:true
+                    });
+                    $.View(model);
+                })
+            </script>
+            <fieldset>
+                <legend>示例</legend>
+                <div bind="class: { my-class: someValue,your-class: otherValue, his-class: moreValue }">同时加上三个类名</div>
+            </fieldset>
+            <p>HTML：</p>
+            <pre class="brush:xml;gutter:false;toolbar:false">
+
+&lt;style&gt;
+    .my-class{
+        color: yellow;
+        background:orange;
+    }
+    .your-class {
+        line-height:3;
+        width:200px;
+    }
+    .his-class{
+        text-indent:2em;
+        font-size:14px;
+    }
+&lt;/style&gt;
+&lt;div bind="class: { my-class: someValue,your-class: otherValue, his-class: moreValue }"&gt;
+    同时加上三个类名
+&lt;/div&gt;
+
+</pre>
+            <p>JS:</p>
+            <pre class="brush:js;gutter:false;toolbar:false">
+$.require("ready,./more/avalon", function() {
+    var model = $.ViewModel({
+        someValue: true,
+        otherValue: true,
+        moreValue: true
+    });
+    $.View(model);
+})
+</pre>
+            <p>
+                <a href="/mvvm">返回教程首页</a>
+            </p>
+        </article>
+    </body>
+
+</html>
