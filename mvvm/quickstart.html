@@ -100,8 +100,8 @@ $.require("ready,./more/avalon", function() {
 </pre>
                 <p>
                     <strong style="color:#a9ea00">&lt;strong bind="text:fullName"&gt;&lt;/strong&gt;</strong>中的bind属性值其实是一个去掉左右花括号的对象字面量，键名为操作函数，键值为监控者或这操作函数的传参。</p>
-                <p>text操作,意即使用监控者的返回值作为此元素的innerText。</p>
-                <p>value操作,意即使用监控者的返回值作为此元素的value属性，并且绑定了一个input或onpropertychange事件，监听用户的输出，作为fitstName,
+                <p>text绑定,意即使用监控者的返回值作为此元素的innerText。</p>
+                <p>value绑定,意即使用监控者的返回值作为此元素的value属性，并且绑定了一个input或onpropertychange事件，监听用户的输出，作为fitstName,
                     lastName的新值，并同步依赖于它们的fullName。</p>
                 <p>
                     <a href="/mvvm">返回教程首页</a>

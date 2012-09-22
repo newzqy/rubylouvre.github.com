@@ -63,14 +63,30 @@
             </ul>
             <p>监控体分以下几种</p>
             <ul>
-                <li>atomWatch，原子监控体，是指在ViewModel定义时， 值为类型为字符串，布尔或数值的Watch。它们是位于双向绑定链的最底层。不需要依赖于其他Watch</li>
-                <li>depsWatch，依赖监控体，是指在ViewModel定义时，值为类型为函数，或为一个拥有setter、getter函数的对象。 它们是位于双向绑定链的中间层，需要依赖于其他atomWatch或depsWatch的返回值计算自己的返回值。</li>
-                <li>actionWatch,操作监控体,用于DOM树或节点打交道的Watch， 它们仅在用户调用了$.View(viewmodel, node
-                    )，把写在元素节点上的bind属性 （可以通过$.config.bindname制定此属性名）的分解出来之时生成的。 它们位于双向绑定链的顶端，为实现最小化刷新而生。</li>
-                <li>listWatch,列表监控体,是指在ViewModel定义时，值为一个数组的Watch。它里面包含着一组Watch，而它本身则是对数组的
+                <li>atomWatch，原子监控者或属性监控者，是指在ViewModel定义时， 值为类型为字符串，布尔或数值的Watch。它们是位于双向绑定链的最底层。不需要依赖于其他Watch</li>
+                <li>depsWatch，依赖监控者，是指在ViewModel定义时，值为类型为函数，或为一个拥有setter、getter函数的对象。 它们是位于双向绑定链的中间层，需要依赖于其他atomWatch或depsWatch的返回值计算自己的返回值。</li>
+                <li>bindWatch,绑定监控者,用于DOM树或节点打交道的Watch， 它们仅在用户调用了$.View(viewmodel, node )，把写在元素节点上的bind属性
+                    （可以通过$.config.bindname制定此属性名）的分解出来之时生成的。 它们位于双向绑定链的顶端，为实现最小化刷新而生。</li>
+                <li>listWatch,列表监控者,是指在ViewModel定义时，值为一个数组的Watch。它里面包含着一组Watch，而它本身则是对数组的
                     增删排序进行监控，进而同步到对应的DOM区域上。</li>
             </ul>
-            <a href="/mvvm/quickstart">快速入门</a>
+            <h3>基础概念三：绑定</h3>
+            <p>为了实现ViewMode与View之间的同步，我们需要在元素节点上定义一个bind属性，里面声明它要做的事，以及做此事时涉及ViewModel中某些对象（Watch）</p>
+            <p>格式为一个对象字面量，可以不用最左与最右的花括号。键名为你要做的操作，avalon已经默认好一系列常用行为，放在$.ViewBindings对象中。
+                键值为一个atomWatch，depsWatch或listWatch作为参数。</p>
+            <p>avalon会分析上面的对象字面量,构成一个bindWatch,并在它所依赖的atomWatch，depsWatch或listWatch建立联系(双向绑定)</p>
+            <h3>教程</h3>
+            <ul>
+                <li>
+                    <a href="/mvvm/quickstart">快速入门</a>
+                </li>
+                <li>
+                    <a href="/mvvm/quickstart">快速入门</a>
+                </li>
+                <li>
+                    <a href="/mvvm/quickstart">快速入门</a>
+                </li>
+            </ul>
         </article>
     </body>
 
