@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <title>checked绑定</title>
+        <title>text绑定</title>
         <script type="text/javascript" src="/scripts/mass_merge.js"></script>
         <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
         <script type="text/javascript" src="/scripts/doc/common.js"></script>
@@ -21,42 +21,38 @@
     
     <body>
         <article>
-            <h1>checked绑定</h1>
+            <h1>text绑定</h1>
             <script>
                 $.require("ready,./more/avalon", function(){
                     var model = $.ViewModel({
-                        displayMessage: false
+                        content: "这是来自model的"
                     });
-                    $.View(model);
+                  
                     setTimeout(function(){
-                        model.displayMessage( true )
+                        $.View(model);
                     },1000)
             
                 })
             </script>
             <fieldset>
                 <legend>示例</legend>
-                <label>
-                    <input type="checkbox" bind="checked: displayMessage" />通过checkbox显示下面的DIV</label>
-                <div bind="if: displayMessage">这由上面的元素checked状态控制显示的</div>
+                <p bind="text: content" />xxxxxxxxxxxxx</p>
             </fieldset>
             <p>HTML</p>
             <pre class="brush:xml;gutter:false;toolbar:false">
 
-   &lt;label&gt;&lt;input type="checkbox" bind="checked: displayMessage" /&gt; 通过checkbox显示下面的DIV&lt;/label&gt;
-   &lt;div bind="if: displayMessage"&gt;这由上面的元素checked状态控制显示的&lt;/div&gt;
+   &lt;p bind="text: content" /&gt; xxxxxxxxxxxxx &lt;/p&gt;
 
 </pre>
-            <p>checked绑定要求它对应的值必须是函数或监控者。</p>
             <p>JS</p>
             <pre class="brush:js;gutter:false;toolbar:false">
 $.require("ready,./more/avalon", function() {
     var model = $.ViewModel({
-        displayMessage: false
+        content: "这是来自model的"
     });
-    $.View(model);
+
     setTimeout(function() {
-        model.displayMessage(true)
+        $.View(model);
     }, 1000)
 
 })
