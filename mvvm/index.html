@@ -65,8 +65,8 @@
             <ul>
                 <li>atomWatch，原子监控者或属性监控者，是指在ViewModel定义时， 值为类型为字符串，布尔或数值的Watch。它们是位于双向绑定链的最底层。不需要依赖于其他Watch</li>
                 <li>depsWatch，依赖监控者，是指在ViewModel定义时，值为类型为函数，或为一个拥有setter、getter函数的对象。 它们是位于双向绑定链的中间层，需要依赖于其他atomWatch或depsWatch的返回值计算自己的返回值。</li>
-                <li>bindWatch,绑定监控者,用于DOM树或节点打交道的Watch， 它们仅在用户调用了$.View(viewmodel, node )，把写在元素节点上的bind属性
-                    （可以通过$.config.bindname制定此属性名）的分解出来之时生成的。 它们位于双向绑定链的顶端，为实现最小化刷新而生。</li>
+                <li>bindWatch,绑定监控者或命令监控者,用于DOM树或节点打交道的Watch， 它们仅在用户调用了$.View(viewmodel, node
+                    )，把写在元素节点上的bind属性 （可以通过$.config.bindname制定此属性名）的分解出来之时生成的。 它们位于双向绑定链的顶端，为实现最小化刷新而生。</li>
                 <li>listWatch,列表监控者,是指在ViewModel定义时，值为一个数组的Watch。它里面包含着一组Watch，而它本身则是对数组的
                     增删排序进行监控，进而同步到对应的DOM区域上。</li>
             </ul>
@@ -81,10 +81,10 @@
                     <a href="/mvvm/quickstart">快速入门</a>
                 </li>
                 <li>
-                    <a href="/mvvm/quickstart">快速入门</a>
+                    <a href="/mvvm/if">if绑定</a>
                 </li>
                 <li>
-                    <a href="/mvvm/quickstart">快速入门</a>
+                    <a href="/mvvm/checked">checked绑定</a>
                 </li>
             </ul>
         </article>

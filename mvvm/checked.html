@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <title>checked绑定</title>
+        <script type="text/javascript" src="/scripts/mass_merge.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
+        <script type="text/javascript" src="/scripts/doc/common.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushJScript.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushCss.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushXml.js"></script>
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/common.css"
+        />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shCore.css"
+        />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shThemeRDark.css"
+        />
+    </head>
+    
+    <body>
+        <article>
+            <h1>checked绑定</h1>
+            <script>
+                $.require("ready,./more/avalon", function(){
+                    var model = $.ViewModel({
+                        displayMessage: false
+                    });
+                    $.View(model);
+                    setTimeout(function(){
+                        model.displayMessage( true )
+                    },1000)
+            
+                })
+            </script>
+            <fieldset>
+                <legend>示例</legend>
+                <label>
+                    <input type="checkbox" bind="checked: displayMessage" />通过checkbox显示下面的DIV</label>
+                <div bind="if: displayMessage">这由上面的元素checked状态控制显示的</div>
+            </fieldset>
+            <p>HTML</p>
+            <pre class="brush:xml;gutter:false;toolbar:false">
+
+   &lt;label&gt;&lt;input type="checkbox" bind="checked: displayMessage" /&gt; 通过checkbox显示下面的DIV&lt;/label&gt;
+   &lt;div bind="if: displayMessage"&gt;这由上面的元素checked状态控制显示的&lt;/div&gt;
+
+</pre>
+            <p>checked绑定要求它对应的值必须是函数。</p>
+            <p>JS</p>
+            <pre class="brush:js;gutter:false;toolbar:false">
+$.require("ready,./more/avalon", function() {
+    var model = $.ViewModel({
+        displayMessage: false
+    });
+    $.View(model);
+    setTimeout(function() {
+        model.displayMessage(true)
+    }, 1000)
+
+})
+</pre>
+            <p>
+                <a href="/mvvm">返回教程首页</a>
+            </p>
+        </article>
+    </body>
+
+</html>
