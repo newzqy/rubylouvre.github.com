@@ -128,7 +128,7 @@ define("avalon",["$attr","$event"], function(){
     }
     //actionWatch用于DOM树或节点打交道的Watch，它们仅在用户调用了$.View(viewmodel, node )，
     //把写在元素节点上的@bind属性的分解出来之时生成的。
-    function actionWatch (node, names, values, key, str, action, model ){
+    function bindWatch (node, names, values, key, str, binding, model ){
         function Watch( neo ){
             if( !Watch.$uuid ){ //如果是第一次执行这个域
                 var arr = model[str]
@@ -149,16 +149,16 @@ define("avalon",["$attr","$event"], function(){
                 delete bridge[ expando ];
                 Watch.$uuid = ++uuid;
                 //第四个参数供流程绑定使用
-                action.init && action.init(node, val, callback, Watch);
+                binding.init && binding.init(node, val, callback, Watch);
             }
             var method = arguments[0], args = arguments[1]
-            if( typeof action[method] == "function" ){
+            if( typeof binding[method] == "function" ){
                 //处理foreach.start, sort, reserve, unshift, shift, pop, push
                 $.log(method)
-                action[method]( Watch, model[str], Watch.fragments, method, args );
+                binding[method]( Watch, model[str], Watch.fragments, method, args );
             }
             //这里需要另一种指令！用于处理数组增删改查与排序
-            action.update(node, val, Watch, model);
+            binding.update(node, val, Watch, model);
             return Watch.$val = val;
         }
         return addWatch( "interacted" ,Watch, node);
@@ -166,7 +166,7 @@ define("avalon",["$attr","$event"], function(){
     //执行绑定在元素标签内的各种指令
     //MVVM不代表什么很炫的视觉效果之类的，它只是组织你代码的一种方式。有方便后期维护，松耦合等等优点而已
     var inputOne = $.oneObject("text,password,textarea,tel,url,search,number,month,email,datetime,week,datetime-local")
-    $.Viewactions = {
+    $.ViewBindings = {
         text: {
             update:  function( node, val ){
                 val = val == null ? "" : val+""
@@ -432,7 +432,7 @@ define("avalon",["$attr","$event"], function(){
     function setBindingsToElement( node, model, setData ){
         //取得标签内的属性绑定，然后构建成actionWatch，并与ViewModel关联在一块
         var attr = node.getAttribute( BINDING ), names = [], values = [], continueBindings = true,
-        key, val, action;
+        key, val, binding;
         for(var name in model){
             if(model.hasOwnProperty(name)){
                 names.push( name );
@@ -443,12 +443,12 @@ define("avalon",["$attr","$event"], function(){
         for(var i = 0; i < array.length; i += 2){
             key = array[i]
             val = array[i+1];
-            action = $.Viewactions[ key ];
-            if( action ){
-                if( action.stopBindings ){
+            binding = $.ViewBindings[ key ];
+            if( binding ){
+                if( binding.stopBindings ){
                     continueBindings = false;
                 }
-                actionWatch(node, names, values, key, val, action, model);
+                bindWatch(node, names, values, key, val, binding, model);
             }
         }
         return continueBindings;
