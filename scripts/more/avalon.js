@@ -294,7 +294,7 @@ define("avalon",["$attr","$event"], function(){
     //位于数组中的Watch,它们每一个增加i
     //if unless with foreach四种bindings都是使用template bindings
     "if,unless,with,foreach,case".replace($.rword, function( type ){
-        $.Viewactions[ type ] = {
+        $.ViewBindings[ type ] = {
             init: function(node, _, _, Watch){
                 node.normalize();            //合并文本节点数
                 var fragment = node.ownerDocument.createDocumentFragment(), el
@@ -316,7 +316,7 @@ define("avalon",["$attr","$event"], function(){
                 if(type == "case" && (typeof model.$switch != "function" )){
                     throw "Must define switch statement above all";
                 }
-                $.Viewactions['template']['update'](node, val, function(){
+                $.ViewBindings['template']['update'](node, val, function(){
                     switch(type){//返回结果可能为 -1 0 1 2
                         case "case":
                         case "if":
@@ -335,7 +335,7 @@ define("avalon",["$attr","$event"], function(){
     });
     //Google IO 2012 - V8引擎突破速度障碍 http://www.tudou.com/programs/view/bqxvrifP4mk/
     //foreach绑定拥有大量的子方法,用于同步数据的增删改查与排序
-    var foreach = $.Viewactions.foreach;
+    var foreach = $.ViewBindings.foreach;
     foreach.start = function( Watch, models, fragments, method, args ){
         for(var i = 1; i < models.length; i++ ){
             Watch.cloneFragment();
@@ -407,9 +407,9 @@ define("avalon",["$attr","$event"], function(){
         return fragment;
     }
 
-    $.Viewactions.disable = {
+    $.ViewBindings.disable = {
         update: function( node, val ){
-            $.Viewactions.enable.update(node, !val);
+            $.ViewBindings.enable.update(node, !val);
         }
     }
 
