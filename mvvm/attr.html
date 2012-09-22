@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <title>attr绑定</title>
+        <script type="text/javascript" src="/scripts/mass_merge.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
+        <script type="text/javascript" src="/scripts/doc/common.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushJScript.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushCss.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushXml.js"></script>
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/common.css"
+        />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shCore.css"
+        />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shThemeRDark.css"
+        />
+    </head>
+    
+    <body>
+        <article>
+            <h1>attr绑定</h1>
+            <p>attr绑定的参数总是一个对象，里面是它要添加的属性名与属性值。</p>
+            <script>
+                $.require("ready,./more/avalon", function(){
+                    var model = $.ViewModel({
+                        url: "http://yyets.com/showresource-juji-1300.html",
+                        details: "全11回/2012春季日剧/YYeTs人人影视字幕组/"+
+                            "中日双语字幕[HR-HDTV,RMVB,720P]"
+                    })
+                    $.View(model);
+                })
+            </script>
+            <fieldset>
+                <legend>示例</legend>
+                <a bind="attr: { href: url, title: details }">
+        青蛙公主
+    </a>
+            </fieldset>
+            <p>HTML：</p>
+            <pre class="brush:xml;gutter:false;toolbar:false">
+
+    &lt;a bind="attr: { href: url, title: details }"&gt;
+        青蛙公主
+    &lt;/a&gt;
+
+</pre>
+            <p>JS:</p>
+            <pre class="brush:js;gutter:false;toolbar:false">
+$.require("ready,./more/avalon", function() {
+    var model = $.ViewModel({
+        url: "http://yyets.com/showresource-juji-1300.html",
+        details: "全11回/2012春季日剧/YYeTs人人影视字幕组/" + "中日双语字幕[HR-HDTV,RMVB,720P]"
+    })
+    $.View(model);
+})
+</pre>
+            <p>
+                <a href="/mvvm">返回教程首页</a>
+            </p>
+        </article>
+    </body>
+
+</html>
