@@ -299,7 +299,7 @@
         if(/\.(\w+)$/.test( tmp )){
             ext = RegExp.$1;
         }
-        if( tmp == ret && !/\.js$/.test(ret)){//如果没有后缀名会补上.js
+        if( ext!="css" &&tmp == ret && !/\.js$/.test(ret)){//如果没有后缀名会补上.js
             ret += ".js";
         }
         return [ret, ext];
@@ -554,7 +554,7 @@
         Ns.define.apply(module, args);  //将iframe中的函数转换为父窗口的函数
     }
 
-    
+
     function install( id, deps, callback ){
         for ( var i = 0, array = [], d; d = deps[i++]; ) {
             array.push( modules[ d ].exports );//从returns对象取得依赖列表中的各模块的返回值
@@ -974,7 +974,7 @@ define("lang", Array.isArray ? [] : ["$lang_fix"],function(){
             }
             return [ obj ]
         },
-        //将字符串中的占位符替换为对应的键值
+        //字符串插值
         //http://www.cnblogs.com/rubylouvre/archive/2011/05/02/1972176.html
         format: function(str, object){
             var array = $.slice(arguments,1);
@@ -1180,7 +1180,7 @@ define("lang", Array.isArray ? [] : ["$lang_fix"],function(){
         在一连串调用中，如果我们throttle了一个函数，那么它会减少调用频率，
         会把A调用之后的XXXms间的N个调用忽略掉，
         然后再调用XXXms后的第一个调用，然后再忽略N个*/
-        throttle:  function(action,delay,tail,debounce) {
+        throttle:  function(delay,action,tail,debounce) {
             var last_call = 0, last_exec = 0, timer = null, curr, diff,
             ctx, args, exec = function() {
                 last_exec = Date.now;
@@ -1208,8 +1208,8 @@ define("lang", Array.isArray ? [] : ["$lang_fix"],function(){
         },
         //是在一连串调用中，按delay把它们分成几组，每组只有开头或结果的那个调用被执行
         //debounce比throttle执行的次数更少
-        debounce : function( action, idle, tail) {
-            return $.throttle( action, idle, tail,true);
+        debounce : function(idle,action,tail) {
+            return $.throttle(idle,action,tail,true);
         }
 
     }, false);
@@ -1620,6 +1620,7 @@ define("lang", Array.isArray ? [] : ["$lang_fix"],function(){
             diff2 = Math.abs(target - n2);
             return diff1 < diff2 ? n1 : n2
         },
+        //http://www.cnblogs.com/xiao-yao/archive/2012/09/11/2680424.html
         round: function(target, base) {
             if (base) {
                 base = Math.pow(10, base);
@@ -2665,7 +2666,7 @@ define("query", function(){
         }
         return elems;
     }
-    var onePosition = $.oneObject("eq,gt,lt,first,last,even,odd");
+     var onePosition = $.oneObject("eq,gt,lt,first,last,even,odd");
 
     $.mix(Icarus, {
         //getAttribute总会返回字符串
@@ -5773,6 +5774,7 @@ define("event", top.dispatchEvent ?  ["$node"] : ["$node","$event_fix"],function
 //=========================================
 //  数据交互模块
 //==========================================
+//var reg = /^[^\u4E00-\u9FA5]*$/;
 define("ajax",["$flow"], function(){
     $.log("已加载ajax模块", 7);
     var global = this,
