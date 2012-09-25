@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <title>石器时代</title>
+        <script type="text/javascript" src="/scripts/mass_merge.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shCore.js"></script>
+        <script type="text/javascript" src="/scripts/doc/common.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushJScript.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushCss.js"></script>
+        <script type="text/javascript" src="/scripts/doc/shBrushXml.js"></script>
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/common.css"
+              />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shCore.css"
+              />
+        <link media="screen" rel="stylesheet" type="text/css" href="/styles/doc/shThemeRDark.css"
+              />
+    </head>
+
+    <body>
+    <article>
+        <h1>石器时代的舰队</h1>
+        <script>
+            $.require("ready,./more/artifact/panel", function(){
+                var model = new $.ui.Panel({
+                    parent: "#parent"
+                })
+                setTimeout(function(){
+                    model.hide()
+                },1000)
+                setTimeout(function(){
+                    model.VM.content.title("新标题")
+                    model.show()
+                },2000)
+            })
+        </script>
+        <fieldset style="height:210px;">
+            <legend>面板示例</legend>
+            <div id="parent"></div>
+        </fieldset>
+
+        <p>JS</p>
+        <pre class="brush:js;gutter:false;toolbar:false">
+            $.require("ready,./more/artifact/panel", function(){
+                var model = new $.ui.Panel()
+                setTimeout(function(){
+                    model.hide()
+                },1000)
+                setTimeout(function(){
+                    model.VM.content.title("新标题")
+                    model.show()
+                },2000)
+            })
+        </pre>
+        <p>
+            <a href="/mvvm">返回教程首页</a>
+        </p>
+    </article>
+</body>
+
+</html>
