@@ -1,4 +1,4 @@
-define('dropdown',[ '$css',"./avalon" ], function(){
+define('dropdown',[ '$css',"../avalon","./bootstrap.css" ], function(){
     $.ui = $.ui||{}
     var defaults = {
         btn_text: "action",
@@ -53,6 +53,7 @@ define('dropdown',[ '$css',"./avalon" ], function(){
             this.VM =  $.ViewModel( data );
             $.View(this.VM, ui[0]);
             var menu = ui.find(".dropdown-menu")
+            //点击按钮时显示下拉框
             ui.on("click",function(){
                 if (ui.is('.disabled, :disabled'))
                     return
@@ -63,14 +64,15 @@ define('dropdown',[ '$css',"./avalon" ], function(){
                 }
                 return false;
             });
-            //当在其他地方点击时会收起下拉框
+            //点击其他地方时会收起下拉框
+            ui.flag_can_collapse = true;
             ui.mouseleave(function(){
                 ui.flag_can_collapse = true;
             }).mouseenter(function(){
                 ui.flag_can_collapse = false;
             });
             $(document).click(function(){
-                if(ui.flag_close_menu){
+                if(ui.flag_can_collapse){
                     ui.removeClass("open");
                 }
             })
@@ -107,14 +109,14 @@ define('dropdown',[ '$css',"./avalon" ], function(){
         var keyCode = e.which;
         if (!/(38|40|27)/.test(keyCode))
             return
-        e.preventDefault();
-        e.stopPropagation();
+        // e.preventDefault();
+        //  e.stopPropagation();
         //决定要操作哪一个
         var el = $(this)
         if (el.is('.disabled, :disabled'))
             return
         var ui = getDropDown( el );
-        console.log(ui)
+
         var isActive = ui.hasClass('open')
         var items = ui.find("li:not(.divider) a");
         if (!isActive || (isActive && keyCode == 27))

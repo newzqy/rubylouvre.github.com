@@ -909,7 +909,7 @@ fieldset {
   border: 0;
 }
 
-legend {
+/*legend {
   display: block;
   width: 100%;
   padding: 0;
@@ -919,13 +919,13 @@ legend {
   color: #333333;
   border: 0;
   border-bottom: 1px solid #e5e5e5;
-}
+}*/
 
-legend small {
+/*legend small {
   font-size: 15px;
   color: #999999;
 }
-
+*/
 label,
 input,
 button,
