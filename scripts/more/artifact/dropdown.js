@@ -1,4 +1,4 @@
-define('dropdown',[ '$css',"./avalon" ], function(){
+define('dropdown',[ '$css',"../avalon","./bootstrap.css" ], function(){
     $.ui = $.ui||{}
     var defaults = {
         btn_text: "action",
