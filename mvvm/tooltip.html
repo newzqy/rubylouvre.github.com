@@ -65,6 +65,8 @@
             </dl>
             <script>
                 $.require("ready,./more/artifact/tooltip", function(){
+				   var a = $.Object.merge({},{position:"top"},{position:undefined})
+                   $.log(a)
                    //只要在元素上定义好必要的属性，它就拥有工具消息了。
                 })
             </script>
