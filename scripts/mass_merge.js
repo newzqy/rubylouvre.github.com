@@ -1906,16 +1906,17 @@
                 }
                 var proto = this.prototype;
                 proto.setOptions = function(){
-                    var first = arguments[0];
+                    var first = arguments[0],c 
                     if( typeof first === "string" ){
                         if(first == "data"){
                             $.log("1111111111111111111")
                             $.log(this)
+                            c = true
                             $.log(arguments)
                         }
                         first =  this[first] || (this[first] = {});
                         [].splice.call( arguments, 0, 1, first );
-                        if(first == "data"){
+                        if(c){
                             $.log("2222222222222222222222222")
                             $.log(arguments)
                         }
