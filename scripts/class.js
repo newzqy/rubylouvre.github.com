@@ -2,7 +2,7 @@
 // 类工厂模块 by 司徒正美
 //==========================================
 define("class", ["$lang"], function(){
-   $.log("已加载类工厂模块",7)
+    $.log("已加载类工厂模块",7)
     var
     unextend = $.oneObject(["_super","prototype", 'extend', 'implement' ]),
     rconst = /constructor|_init|_super/,
@@ -40,6 +40,9 @@ define("class", ["$lang"], function(){
             proto.setOptions = function(){
                 var first = arguments[0];
                 if( typeof first === "string" ){
+                    if(first == "data"){
+                        $.log(this)
+                    }
                     first =  this[first] || (this[first] = {});
                     [].splice.call( arguments, 0, 1, first );
                 }else{
