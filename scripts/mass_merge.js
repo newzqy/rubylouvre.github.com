@@ -1902,6 +1902,7 @@ define("class", ["$lang"], function(){
                 var first = arguments[0];
                 if( typeof first === "string" ){
                     if(first == "data"){
+                        $.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
                         $.log(this)
                     }
                     first =  this[first] || (this[first] = {});
