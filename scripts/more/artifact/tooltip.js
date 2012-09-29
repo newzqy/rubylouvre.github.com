@@ -6,7 +6,7 @@ define('tooltip',[ '$css',"../avalon","./bootstrap.css" ], function(){
     var defaults = {
         parent: "body",
         text: '',
-        position:"top",
+        position:"bottom",
         trigger: "hover",
         delay: 0
     }
