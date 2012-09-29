@@ -34,6 +34,7 @@ define('tooltip',[ '$css',"../avalon","./bootstrap.css" ], function(){
             if (data.animation) {
                 position += "fade";
             }
+			$.log(position)
             this.VM = $.ViewModel( {
                 cls: position,  //top | bottom | left | right | in top
                 text: data.text
@@ -61,7 +62,6 @@ define('tooltip',[ '$css',"../avalon","./bootstrap.css" ], function(){
         },
         enter: function () {
             var self = this
-            $.log("xxxxxxxxxxxxx")
             if (!this.data.delay.show)
                 return this.show()
             clearTimeout(this.timeout)
