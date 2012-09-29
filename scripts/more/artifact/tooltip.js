@@ -13,6 +13,7 @@ define('tooltip',[ '$css',"../avalon","./bootstrap.css" ], function(){
     $.ui.Tooltip = $.factory({
         init: function(opts){
             opts =  opts || [];
+			$.log(this)
             this.setOptions ("data", defaults, opts );
             var data = this.data;
             var position = data.position;
