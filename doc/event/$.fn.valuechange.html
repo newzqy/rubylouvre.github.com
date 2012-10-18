@@ -35,28 +35,29 @@
                 <li>oldValue: 旧的值。</li>
                 <li>newValue: 当前值。</li>
                 <li>realType: 是由哪种原生事件触发的。</li>
-                </dl>
-                <p>
-                    <span class="stress">参数：</span>
-                </p>
-                <dl>
-                    <dt>fn</dt>
-                    <dd>可选。Funcion。回调函数。</dd>
-                </dl>
-                <fieldset id="first_example">
-                    <legend>例子</legend>
-                    <pre class="brush:js;gutter:false;toolbar:false">
-$.require("ready,event", function() {
+            </ul>
+            <p>需要注意的是,它并不在event.js文件,而在more/valuechange.js中。</p>
+            <p>
+                <span class="stress">参数：</span>
+            </p>
+            <dl>
+                <dt>fn</dt>
+                <dd>可选。Funcion。回调函数。</dd>
+            </dl>
+            <fieldset id="first_example">
+                <legend>例子</legend>
+                <pre class="brush:js;gutter:false;toolbar:false">
+$.require("ready,more/valuechange", function() {
     $("#aaa").valuechange(function(e) {
         var str = e.oldValue + " " + e.newValue + " " + e.realType
         $("#show_result").text(str);
     })
 });;
 </pre>
-                    <button class="doc_btn" type="button">点我，执行代码</button>
-                    <input type="text" id="aaa" />
-                    <div id="show_result"></div>
-                </fieldset>
+                <button class="doc_btn" type="button">点我，执行代码</button>
+                <input type="text" id="aaa" />
+                <div id="show_result"></div>
+            </fieldset>
         </article>
     </body>
 
